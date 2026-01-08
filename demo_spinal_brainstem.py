@@ -3,8 +3,14 @@ from __future__ import annotations
 import asyncio
 from typing import Any, Optional
 
-# Pattern A imports (your current tree layout under src/)  fileciteturn31file0
-from shared.contracts_base_async import InMemoryTopicBus, Meta, MessageType, Plane, ScopeLevel
+# Pattern A imports (your current tree layout under src/)
+from shared.contracts_base_async import (
+    InMemoryTopicBus,
+    Meta,
+    MessageType,
+    Plane,
+    ScopeLevel,
+)
 from shared.topics_async import topic_reflect_reject
 
 from spinal_cord.spinal_contracts_async_refactored_v2 import (
@@ -21,20 +27,21 @@ from brainstem.brainstem_contracts_async_refactored_v2 import (
 )
 
 
-async def _one_message(bus: InMemoryTopicBus, topic: str, timeout_s: float = 1.0) -> Optional[Any]:
-    """Wait for exactly one message on a specific topic (best-effort demo helper)."""
-    sub = bus.subscribe(topic)
+async def _next_or_none(aiter, timeout_s: float = 1.0) -> Optional[Any]:
+    """Wait for the next item from an async iterator, with timeout."""
     try:
-        return await asyncio.wait_for(sub.__anext__(), timeout=timeout_s)
+        return await asyncio.wait_for(aiter.__anext__(), timeout=timeout_s)
     except asyncio.TimeoutError:
         return None
 
 
 async def demo_spinal_brainstem() -> None:
     """Demo:
-    1) Publish a spinal afferent (accepted by SpinalCord)
-    2) Create a Brainstem RelayBundle and publish it (simulate transform)
+    1) Send a spinal afferent (accepted by SpinalCord)
+    2) Publish a Brainstem RelayBundle (simulate transform)
     3) Send a wrong-type message to Brainstem to trigger a RejectEvent
+
+    NOTE: This version avoids a race condition by subscribing BEFORE publishing.
     """
 
     # In-memory buses (stand-ins for separate brokers)
@@ -42,8 +49,12 @@ async def demo_spinal_brainstem() -> None:
     core_bus = InMemoryTopicBus()
     reflect_bus = InMemoryTopicBus()
 
-    spinal = SpinalCord(spinal_bus=spinal_bus, reflect_bus=reflect_bus, publisher_id="spinal-demo")
-    brainstem = Brainstem(core_bus=core_bus, reflect_bus=reflect_bus, publisher_id="brainstem-demo")
+    spinal = SpinalCord(
+        spinal_bus=spinal_bus, reflect_bus=reflect_bus, publisher_id="spinal-demo"
+    )
+    brainstem = Brainstem(
+        core_bus=core_bus, reflect_bus=reflect_bus, publisher_id="brainstem-demo"
+    )
 
     scope_level = ScopeLevel.ROOM
     scope = "living_room"
@@ -72,7 +83,7 @@ async def demo_spinal_brainstem() -> None:
     await spinal.ingest(aff_topic, aff)
     print(f"[ok] SpinalCord accepted AfferentSignal on {aff_topic}")
 
-    # ---- 2) Brainstem produces a relay bundle (simulate transform) ----
+    # ---- 2) Brainstem publishes a relay bundle (simulate transform) ----
     relay = RelayBundle(
         meta=Meta(
             message_type=MessageType.RELAY_BUNDLE,
@@ -93,15 +104,18 @@ async def demo_spinal_brainstem() -> None:
     )
 
     relay_topic = topic_bs_relay(scope_level, scope, channel="somatic")
-    # Start a listener before publishing (so we can show it)
-    relay_task = asyncio.create_task(_one_message(core_bus, relay_topic, timeout_s=1.0))
+
+    # Subscribe BEFORE publishing to avoid missing the message.
+    relay_sub = core_bus.subscribe(relay_topic)
     await brainstem.publish_relay_bundle(relay)
-    received_relay = await relay_task
+    received_relay = await _next_or_none(relay_sub, timeout_s=1.0)
 
     if received_relay is None:
         print(f"[warn] No RelayBundle received on {relay_topic}")
     else:
-        print(f"[ok] Brainstem published RelayBundle on {relay_topic}: {received_relay}")
+        print(
+            f"[ok] Brainstem published RelayBundle on {relay_topic}: {received_relay}"
+        )
 
     # ---- 3) Wrong-type to Brainstem => RejectEvent on Reflect ----
     bad = EfferentCommand(
@@ -125,14 +139,18 @@ async def demo_spinal_brainstem() -> None:
     )
 
     reject_topic = topic_reflect_reject(scope_level, scope)
-    reject_task = asyncio.create_task(_one_message(reflect_bus, reject_topic, timeout_s=1.0))
+
+    # Subscribe BEFORE sending the bad message.
+    reject_sub = reflect_bus.subscribe(reject_topic)
     await brainstem.ingest(topic="/bs/ingress/demo", msg=bad)
-    rej = await reject_task
+    rej = await _next_or_none(reject_sub, timeout_s=1.0)
 
     if rej is None:
         print(f"[warn] No RejectEvent observed on {reject_topic}")
     else:
-        print(f"[ok] Brainstem rejected wrong-type message; RejectEvent on {reject_topic}: {rej}")
+        print(
+            f"[ok] Brainstem rejected wrong-type message; RejectEvent on {reject_topic}: {rej}"
+        )
 
 
 if __name__ == "__main__":

@@ -10,6 +10,7 @@ from shared.contracts_base_async import (
     RejectEvent,
     ScopeLevel,
     TopicBus,
+    sanitize_path_component,
 )
 
 from shared.topics_async import topic_reflect_reject
@@ -90,23 +91,47 @@ class ReflexEvent:
 # =============================================================================
 
 def topic_sc_aff(scope_level: ScopeLevel, scope: str, sensor_type: str, device_id: str) -> str:
-    return f"/sc/aff/{scope_level.value}/{scope}/sensor/{sensor_type}/device/{device_id}"
+    """Build afferent signal topic with path sanitization."""
+    return (
+        f"/sc/aff/{scope_level.value}/{sanitize_path_component(scope, 'scope')}"
+        f"/sensor/{sanitize_path_component(sensor_type, 'sensor_type')}"
+        f"/device/{sanitize_path_component(device_id, 'device_id')}"
+    )
 
 
 def topic_sc_eff(scope_level: ScopeLevel, scope: str, actuator_type: str, device_id: str, action_id: str) -> str:
-    return f"/sc/eff/{scope_level.value}/{scope}/act/{actuator_type}/device/{device_id}/cmd/{action_id}"
+    """Build efferent command topic with path sanitization."""
+    return (
+        f"/sc/eff/{scope_level.value}/{sanitize_path_component(scope, 'scope')}"
+        f"/act/{sanitize_path_component(actuator_type, 'actuator_type')}"
+        f"/device/{sanitize_path_component(device_id, 'device_id')}"
+        f"/cmd/{sanitize_path_component(action_id, 'action_id')}"
+    )
 
 
 def topic_sc_out(scope_level: ScopeLevel, scope: str, device_id: str, action_id: str) -> str:
-    return f"/sc/out/{scope_level.value}/{scope}/device/{device_id}/action/{action_id}"
+    """Build outcome event topic with path sanitization."""
+    return (
+        f"/sc/out/{scope_level.value}/{sanitize_path_component(scope, 'scope')}"
+        f"/device/{sanitize_path_component(device_id, 'device_id')}"
+        f"/action/{sanitize_path_component(action_id, 'action_id')}"
+    )
 
 
 def topic_sc_reflex_config(scope_level: ScopeLevel, scope: str, reflex_id: str) -> str:
-    return f"/sc/reflex/{scope_level.value}/{scope}/rule/{reflex_id}/configure"
+    """Build reflex configuration topic with path sanitization."""
+    return (
+        f"/sc/reflex/{scope_level.value}/{sanitize_path_component(scope, 'scope')}"
+        f"/rule/{sanitize_path_component(reflex_id, 'reflex_id')}/configure"
+    )
 
 
 def topic_sc_reflex_trigger(scope_level: ScopeLevel, scope: str, reflex_id: str) -> str:
-    return f"/sc/reflex/{scope_level.value}/{scope}/rule/{reflex_id}/trigger"
+    """Build reflex trigger topic with path sanitization."""
+    return (
+        f"/sc/reflex/{scope_level.value}/{sanitize_path_component(scope, 'scope')}"
+        f"/rule/{sanitize_path_component(reflex_id, 'reflex_id')}/trigger"
+    )
 
 
 # =============================================================================

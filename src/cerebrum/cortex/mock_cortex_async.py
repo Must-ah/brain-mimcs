@@ -16,16 +16,29 @@ class InMemoryTopicBus:
 
     - publish(topic, msg): fan-out to all subscribers
     - subscribe(topic): async iterator yielding messages
+
+    Rate limiting: Default max queue size of 1000 prevents memory exhaustion.
+    When queue is full, oldest messages are dropped (backpressure).
     """
-    def __init__(self) -> None:
+    DEFAULT_MAX_QUEUE_SIZE = 1000
+
+    def __init__(self, max_queue_size: int = DEFAULT_MAX_QUEUE_SIZE) -> None:
         self._subs: Dict[str, List[asyncio.Queue[Any]]] = {}
+        self._max_queue_size = max_queue_size
 
     async def publish(self, topic: str, msg: Any) -> None:
         for q in self._subs.get(topic, []):
+            if q.full():
+                # Drop oldest message to make room (backpressure)
+                try:
+                    q.get_nowait()
+                except asyncio.QueueEmpty:
+                    pass
             await q.put(msg)
 
-    def subscribe(self, topic: str, max_queue: int = 0) -> AsyncIterator[Any]:
-        q: asyncio.Queue[Any] = asyncio.Queue(maxsize=max_queue)
+    def subscribe(self, topic: str, max_queue: Optional[int] = None) -> AsyncIterator[Any]:
+        queue_size = max_queue if max_queue is not None else self._max_queue_size
+        q: asyncio.Queue[Any] = asyncio.Queue(maxsize=queue_size)
         self._subs.setdefault(topic, []).append(q)
 
         async def _iter() -> AsyncIterator[Any]:

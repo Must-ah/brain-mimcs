@@ -10,6 +10,7 @@ from shared.contracts_base_async import (
     RejectEvent,
     ScopeLevel,
     TopicBus,
+    sanitize_path_component,
 )
 
 from shared.topics_async import topic_reflect_reject
@@ -69,15 +70,24 @@ class GlobalBroadcast:
 # =============================================================================
 
 def topic_bs_relay(scope_level: ScopeLevel, scope: str, channel: str) -> str:
-    return f"/bs/relay/{scope_level.value}/{scope}/channel/{channel}"
+    """Build relay bundle topic with path sanitization."""
+    return (
+        f"/bs/relay/{scope_level.value}/{sanitize_path_component(scope, 'scope')}"
+        f"/channel/{sanitize_path_component(channel, 'channel')}"
+    )
 
 
 def topic_bs_pattern_trigger(scope_level: ScopeLevel, scope: str, pattern_type: str) -> str:
-    return f"/bs/pattern/{scope_level.value}/{scope}/{pattern_type}/trigger"
+    """Build pattern trigger topic with path sanitization."""
+    return (
+        f"/bs/pattern/{scope_level.value}/{sanitize_path_component(scope, 'scope')}"
+        f"/{sanitize_path_component(pattern_type, 'pattern_type')}/trigger"
+    )
 
 
 def topic_bs_global_alert(scope_level: ScopeLevel, scope: str) -> str:
-    return f"/bs/global/{scope_level.value}/{scope}/alert"
+    """Build global alert topic with path sanitization."""
+    return f"/bs/global/{scope_level.value}/{sanitize_path_component(scope, 'scope')}/alert"
 
 
 # =============================================================================

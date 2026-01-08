@@ -1,9 +1,33 @@
 from __future__ import annotations
 
 import asyncio
+import re
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, AsyncIterator, Dict, List, Mapping, Optional, Protocol, Sequence, Tuple
+
+
+# =============================================================================
+# Path sanitization for topic construction
+# =============================================================================
+
+_VALID_PATH_COMPONENT = re.compile(r"^[a-zA-Z0-9_-]+$")
+
+
+class PathValidationError(ValueError):
+    """Raised when a path component fails validation."""
+    pass
+
+
+def _sanitize(value: str, field_name: str = "value") -> str:
+    """Validate a path component for topic construction."""
+    if not value:
+        raise PathValidationError(f"{field_name} cannot be empty")
+    if ".." in value or "/" in value or "\\" in value:
+        raise PathValidationError(f"Invalid characters in {field_name}: {value!r}")
+    if not _VALID_PATH_COMPONENT.match(value):
+        raise PathValidationError(f"{field_name} contains invalid characters: {value!r}")
+    return value
 
 
 # =============================================================================
@@ -107,11 +131,16 @@ def topic_for(env: Envelope) -> str:
     """Transport-agnostic naming.
 
     Note: Media lanes (V_VIDEO/U_AUDIO) are session-based and not intended for the same bus.
+
+    Raises:
+        PathValidationError: If scope or other path components contain invalid characters
     """
     if env.lane in (Lane.V_VIDEO, Lane.U_AUDIO):
         raise ValueError("Media lanes are session-based; do not route raw media via topic_for().")
 
-    base = f"/{env.lane.value}/{env.kind.value}/{env.scope_level.value}/{env.scope}"
+    # Sanitize user-provided scope to prevent path traversal
+    safe_scope = _sanitize(env.scope, "scope")
+    base = f"/{env.lane.value}/{env.kind.value}/{env.scope_level.value}/{safe_scope}"
 
     if env.lane in (Lane.A_DRIVER, Lane.B_MODULATOR, Lane.G_GATE):
         if env.nucleus is None:
@@ -120,7 +149,8 @@ def topic_for(env: Envelope) -> str:
 
     if env.lane == Lane.X_REFLECT:
         src_lane = (env.payload or {}).get("src_lane", "unknown")
-        return f"{base}/lane/{src_lane}"
+        safe_src_lane = _sanitize(src_lane, "src_lane")
+        return f"{base}/lane/{safe_src_lane}"
 
     return base
 
@@ -167,15 +197,25 @@ def reflect_of(env: Envelope, now_ms: int, reflector: str = "reflector") -> Enve
 # =============================================================================
 
 class InMemoryTopicBus:
-    def __init__(self) -> None:
+    DEFAULT_MAX_QUEUE_SIZE = 1000  # Prevent memory exhaustion
+
+    def __init__(self, max_queue_size: int = DEFAULT_MAX_QUEUE_SIZE) -> None:
         self._subs: Dict[str, List[asyncio.Queue[Any]]] = {}
+        self._max_queue_size = max_queue_size
 
     async def publish(self, topic: str, msg: Any) -> None:
         for q in self._subs.get(topic, []):
+            if q.full():
+                # Drop oldest message to make room (backpressure)
+                try:
+                    q.get_nowait()
+                except asyncio.QueueEmpty:
+                    pass
             await q.put(msg)
 
-    def subscribe(self, topic: str) -> AsyncIterator[Any]:
-        q: asyncio.Queue[Any] = asyncio.Queue()
+    def subscribe(self, topic: str, max_queue: Optional[int] = None) -> AsyncIterator[Any]:
+        queue_size = max_queue if max_queue is not None else self._max_queue_size
+        q: asyncio.Queue[Any] = asyncio.Queue(maxsize=queue_size)
         self._subs.setdefault(topic, []).append(q)
 
         async def _iter() -> AsyncIterator[Any]:
