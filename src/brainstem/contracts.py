@@ -7,13 +7,11 @@ from shared.contracts_base_async import (
     MessageType,
     Meta,
     Plane,
-    RejectEvent,
     ScopeLevel,
     TopicBus,
     sanitize_path_component,
 )
-
-from shared.topics_async import topic_reflect_reject
+from shared.plane_base_async import BasePlaneFacade
 
 
 # =============================================================================
@@ -94,7 +92,7 @@ def topic_bs_global_alert(scope_level: ScopeLevel, scope: str) -> str:
 # Brainstem façade (typed ports + reject-on-wrong-type)
 # =============================================================================
 
-class Brainstem:
+class Brainstem(BasePlaneFacade):
     """Brainstem plane façade.
 
     Accepts:
@@ -112,6 +110,8 @@ class Brainstem:
         MessageType.PATTERN_TRIGGER,
         MessageType.GLOBAL_BROADCAST,
     )
+    ORIGIN_PLANE = Plane.BRAINSTEM
+    REJECT_HINT = "Brainstem accepts AfferentSignal, RelayBundle, PatternTrigger, GlobalBroadcast."
 
     def __init__(
         self,
@@ -120,44 +120,11 @@ class Brainstem:
         publisher_id: str = "brainstem",
         default_window_ms: int = 200,
     ) -> None:
-        self._bus = core_bus
-        self._reflect = reflect_bus
-        self._publisher_id = publisher_id
+        super().__init__(core_bus, reflect_bus, publisher_id)
         self._window_ms = default_window_ms
-
-    async def ingest(self, topic: str, msg: Any) -> None:
-        mt = getattr(getattr(msg, "meta", None), "message_type", None)
-        if mt not in self.ALLOWED_INBOUND:
-            await self._reject(topic, msg, reason="wrong_type_or_missing_meta")
-            return
-        return
 
     async def publish_relay_bundle(self, bundle: RelayBundle) -> None:
         await self._bus.publish(topic_bs_relay(bundle.scope_level, bundle.scope, bundle.channel), bundle)
-
-    async def _reject(self, topic: str, msg: Any, reason: str) -> None:
-        now_ms = getattr(getattr(msg, "meta", None), "timestamp_ms", 0) or 0
-        scope_level = getattr(msg, "scope_level", None) or ScopeLevel.HOUSE
-        scope = getattr(msg, "scope", None) or "unknown"
-
-        rej = RejectEvent(
-            meta=Meta(
-                message_type=MessageType.REJECT_EVENT,
-                schema_version="v1",
-                origin_plane=Plane.BRAINSTEM,
-                timestamp_ms=int(now_ms),
-                correlation_id=getattr(getattr(msg, "meta", None), "correlation_id", None),
-                source=self._publisher_id,
-            ),
-            reason=reason,
-            original_topic=topic,
-            publisher_id=getattr(getattr(msg, "meta", None), "source", None),
-            details={
-                "observed_type": str(getattr(getattr(msg, "meta", None), "message_type", None)),
-                "hint": "Brainstem accepts AfferentSignal, RelayBundle, PatternTrigger, GlobalBroadcast.",
-            },
-        )
-        await self._reflect.publish(topic_reflect_reject(scope_level, scope), rej)
 
 
 __all__ = [

@@ -7,13 +7,11 @@ from shared.contracts_base_async import (
     MessageType,
     Meta,
     Plane,
-    RejectEvent,
     ScopeLevel,
     TopicBus,
     sanitize_path_component,
 )
-
-from shared.topics_async import topic_reflect_reject
+from shared.plane_base_async import BasePlaneFacade
 
 
 # =============================================================================
@@ -138,7 +136,7 @@ def topic_sc_reflex_trigger(scope_level: ScopeLevel, scope: str, reflex_id: str)
 # SpinalCord façade (typed ports + reject-on-wrong-type)
 # =============================================================================
 
-class SpinalCord:
+class SpinalCord(BasePlaneFacade):
     """SpinalCord plane façade.
 
     Accepts only:
@@ -155,6 +153,8 @@ class SpinalCord:
         MessageType.REFLEX_RULE,
         MessageType.REFLEX_TRIGGER,
     )
+    ORIGIN_PLANE = Plane.SPINAL
+    REJECT_HINT = "SpinalCord accepts only AfferentSignal, EfferentCommand, ReflexRule, ReflexTrigger."
 
     def __init__(
         self,
@@ -162,46 +162,13 @@ class SpinalCord:
         reflect_bus: TopicBus,
         publisher_id: str = "spinal",
     ) -> None:
-        self._bus = spinal_bus
-        self._reflect = reflect_bus
-        self._publisher_id = publisher_id
-
-    async def ingest(self, topic: str, msg: Any) -> None:
-        mt = getattr(getattr(msg, "meta", None), "message_type", None)
-        if mt not in self.ALLOWED_INBOUND:
-            await self._reject(topic, msg, reason="wrong_type_or_missing_meta")
-            return
-        return
+        super().__init__(spinal_bus, reflect_bus, publisher_id)
 
     async def publish_outcome(self, evt: OutcomeEvent) -> None:
         await self._bus.publish(
             topic_sc_out(evt.scope_level, evt.scope, evt.device_id, evt.action_id),
             evt,
         )
-
-    async def _reject(self, topic: str, msg: Any, reason: str) -> None:
-        now_ms = getattr(getattr(msg, "meta", None), "timestamp_ms", 0) or 0
-        scope_level = getattr(msg, "scope_level", None) or ScopeLevel.HOUSE
-        scope = getattr(msg, "scope", None) or "unknown"
-
-        rej = RejectEvent(
-            meta=Meta(
-                message_type=MessageType.REJECT_EVENT,
-                schema_version="v1",
-                origin_plane=Plane.SPINAL,
-                timestamp_ms=int(now_ms),
-                correlation_id=getattr(getattr(msg, "meta", None), "correlation_id", None),
-                source=self._publisher_id,
-            ),
-            reason=reason,
-            original_topic=topic,
-            publisher_id=getattr(getattr(msg, "meta", None), "source", None),
-            details={
-                "observed_type": str(getattr(getattr(msg, "meta", None), "message_type", None)),
-                "hint": "SpinalCord accepts only AfferentSignal, EfferentCommand, ReflexRule, ReflexTrigger.",
-            },
-        )
-        await self._reflect.publish(topic_reflect_reject(scope_level, scope), rej)
 
 
 __all__ = [
