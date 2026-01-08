@@ -49,21 +49,32 @@ Subcortical modules:
 | G (GATE) | TRN inhibition state | Distributed control-plane |
 | X (REFLECTION) | Audit/observability | Non-blocking copies |
 
-### Key Contracts (`src/shared/contracts_base_async.py`)
+### Key Contracts (`src/shared/`)
 
+**contracts_base_async.py** - Core types:
 - `ScopeLevel`: DEVICE, ROOM, HOUSE, USER_SESSION
-- `Plane`: SPINAL, BRAINSTEM, THALAMIC, CORTICAL
+- `Plane`: SPINAL, BRAINSTEM, THALAMUS, CORTEX, REFLECT
 - `MessageType`: AFFERENT_SIGNAL, EFFERENT_COMMAND, RELAY_BUNDLE, etc.
 - `TopicBus` Protocol: async publish/subscribe interface
 - `InMemoryTopicBus`: reference implementation for testing
+- `RejectEvent`: standard rejection message contract
+
+**plane_base_async.py** - Base plane facade:
+- `BasePlaneFacade`: common ingress validation and reject logic
+  - Subclasses define: `ALLOWED_INBOUND`, `ORIGIN_PLANE`, `REJECT_HINT`
+  - Override `dispatch(topic, msg)` for domain-specific handling
+  - Base handles: type validation, RejectEvent emission to reflect bus
 
 ### Source Layout
 
 ```
 src/
-├── shared/           # Base types, TopicBus protocol, topic helpers
-├── spinal_cord/      # AfferentSignal, EfferentCommand, ReflexRule
-├── brainstem/        # RelayBundle, PatternTrigger, GlobalBroadcast
+├── shared/
+│   ├── contracts_base_async.py  # Core types, TopicBus, RejectEvent
+│   ├── plane_base_async.py      # BasePlaneFacade (ingress/reject logic)
+│   └── topics_async.py          # Shared topic helpers
+├── spinal_cord/      # SpinalCord(BasePlaneFacade) + domain contracts
+├── brainstem/        # Brainstem(BasePlaneFacade) + domain contracts
 ├── communication/    # Lane definitions, Envelope wrapper
 └── cerebrum/
     ├── cortex/       # Decision layer with L4/L5/L6 feedback
@@ -77,11 +88,15 @@ src/
 ## Design Patterns
 
 1. **Contract-First**: All modules define Protocol classes before implementations
-2. **Type Validation**: Each layer validates inbound message types and emits RejectEvent on violations
-3. **Frozen Dataclasses**: Immutable message types throughout
-4. **Scope-Based Organization**: Everything is scoped (device/room/house/session)
-5. **Idempotency**: Commands use `action_id` for deduplication
-6. **Non-blocking Reflection**: Lane X failures don't affect primary flows
+2. **BasePlaneFacade Pattern**: Planes inherit from `BasePlaneFacade` for consistent ingress/reject
+   - Base knows: envelope/meta, reject contract, reflect topic
+   - Base does NOT know: domain topics, channels, device mappings
+   - Subclasses override `dispatch()` for domain-specific handling
+3. **Type Validation**: Each layer validates inbound message types and emits RejectEvent on violations
+4. **Frozen Dataclasses**: Immutable message types throughout
+5. **Scope-Based Organization**: Everything is scoped (device/room/house/session)
+6. **Idempotency**: Commands use `action_id` for deduplication
+7. **Non-blocking Reflection**: Lane X failures don't affect primary flows
 
 ## Infrastructure Notes
 
