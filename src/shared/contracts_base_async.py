@@ -81,6 +81,11 @@ class MessageType(str, Enum):
     PATTERN_RESPONSE = "PatternResponse"
     GLOBAL_BROADCAST = "GlobalBroadcast"
 
+    # Thalamus
+    THALAMIC_ENVELOPE = "ThalamicEnvelope"
+    ROUTE_DECISION = "RouteDecision"
+    GATE_STATE = "GateState"
+
     # Ops
     REJECT_EVENT = "RejectEvent"
 

@@ -4,6 +4,15 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, List, Mapping, Optional, Protocol, Sequence, Tuple
 
+from shared.contracts_base_async import (
+    MessageType,
+    Meta,
+    Plane,
+    ScopeLevel,
+    TopicBus,
+)
+from shared.plane_base_async import BasePlaneFacade
+
 
 # ---------- Core enums / types ----------
 
@@ -53,13 +62,6 @@ class CortexLayer(str, Enum):
 class GateMode(str, Enum):
     MULTI = "multi"  # allow multiple channels
     WINNER_TAKE_ALL = "winner_take_all"
-
-
-class ScopeLevel(str, Enum):
-    DEVICE = "device"
-    ROOM = "room"
-    HOUSE = "house"
-    USER_SESSION = "user_session"
 
 
 @dataclass(frozen=True)
@@ -170,27 +172,59 @@ class GatingPolicy(Protocol):
 # ---------- Main Thalamus class skeleton - PURE ASYNC ----------
 
 
-class Thalamus:
+class Thalamus(BasePlaneFacade):
     """
-    Contract-only skeleton for a 'Thalamus' interface package:
-    - Addressing by nucleus + scope
-    - Driver vs modulator signal classes
-    - TRN-like gating semantics (inhibition)
-    - Relay to cortex targets + feedback loops
+    Thalamus plane façade with gating and relay logic.
+
+    Accepts:
+      - RelayBundle (from Brainstem)
+      - ThalamicEnvelope (internal routing / cortex feedback)
+      - GlobalBroadcast (neuromodulator state)
+
+    Rejects everything else by emitting a RejectEvent to Reflect.
+
+    Features:
+      - Addressing by nucleus + scope
+      - Driver vs modulator signal classes
+      - TRN-like gating semantics (inhibition)
+      - Relay to cortex targets + feedback loops
     """
+
+    ALLOWED_INBOUND: Tuple[MessageType, ...] = (
+        MessageType.RELAY_BUNDLE,
+        MessageType.THALAMIC_ENVELOPE,
+        MessageType.GLOBAL_BROADCAST,
+    )
+    ORIGIN_PLANE = Plane.THALAMUS
+    REJECT_HINT = "Thalamus accepts RelayBundle, ThalamicEnvelope, GlobalBroadcast."
 
     def __init__(
         self,
-        gate_store: GateStore,
-        routing_policy: RoutingPolicy,
-        gating_policy: GatingPolicy,
-        cortex_port: CortexRelayPort,
-        trn_port: TRNGatePort,
-        feedback_port: ThalamusFeedbackPort,
-    ) -> None: ...
+        thalamus_bus: TopicBus,
+        reflect_bus: TopicBus,
+        publisher_id: str = "thalamus",
+        gate_store: Optional[GateStore] = None,
+        routing_policy: Optional[RoutingPolicy] = None,
+        gating_policy: Optional[GatingPolicy] = None,
+        cortex_port: Optional[CortexRelayPort] = None,
+        trn_port: Optional[TRNGatePort] = None,
+        feedback_port: Optional[ThalamusFeedbackPort] = None,
+    ) -> None:
+        super().__init__(thalamus_bus, reflect_bus, publisher_id)
+        self._gate_store = gate_store
+        self._routing_policy = routing_policy
+        self._gating_policy = gating_policy
+        self._cortex_port = cortex_port
+        self._trn_port = trn_port
+        self._feedback_port = feedback_port
 
-    # --- ingestion ---
-    async def ingest(self, envelope: ThalamicEnvelope) -> None: ...
+    # --- dispatch (called after ingress validation passes) ---
+    async def dispatch(self, topic: str, msg: Any) -> None:
+        """Handle validated messages. Override for domain-specific routing."""
+        pass  # Skeleton: implement routing/gating logic here
+
+    # --- legacy ingestion (for ThalamicEnvelope directly) ---
+    async def ingest_envelope(self, envelope: ThalamicEnvelope) -> None: ...
 
     async def ingest_batch(self, envelopes: Sequence[ThalamicEnvelope]) -> None: ...
 
