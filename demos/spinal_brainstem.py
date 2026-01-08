@@ -1,7 +1,15 @@
 from __future__ import annotations
 
 import asyncio
+import sys
+from pathlib import Path
 from typing import Any, Optional
+
+# Ensure `src/` is on the module search path
+ROOT = Path(__file__).resolve().parent.parent
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
 
 # Pattern A imports (your current tree layout under src/)
 from shared.contracts_base_async import (
