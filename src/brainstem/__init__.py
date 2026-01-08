@@ -1,9 +1,9 @@
-"""Brainstem package (Pattern A).
+"""Brainstem package.
 
 Re-exports the canonical async contracts + façade.
 
 Source of truth:
-- brainstem_contracts_async_refactored_v2.py
+- contracts.py
 """
 
-from .brainstem_contracts_async_refactored_v2 import *  # noqa: F401,F403
+from .contracts import *  # noqa: F401,F403
