@@ -1,9 +1,9 @@
-"""Spinal cord package (Pattern A).
+"""Communication package.
 
-Re-exports the canonical async contracts + façade.
+Re-exports the canonical async contracts.
 
 Source of truth:
-- spinal_contracts_async_refactored_v2.py
+- contracts.py
 """
 
-from .communication_contracts_async_v2 import *  # noqa: F401,F403
+from .contracts import *  # noqa: F401,F403

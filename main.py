@@ -18,13 +18,14 @@ if str(SRC) not in sys.path:
 _ALLOWED_MODULES: frozenset[str] = frozenset([
     "cerebrum.subcortical.hypothalamus.hypothalamus_async",
     "cerebrum.subcortical.basal_ganglia.basal_ganglia_async",
-    "cerebrum.subcortical.limbic.limbic_interface_skeleton_aligned_async",
+    "cerebrum.subcortical.limbic.limbic_async",
+    "cerebrum.subcortical.thalamus.thalamus_async",
     "cerebrum.cortex.mock_cortex_async",
-    "communication.communication_contracts_async_v2",
+    "communication.contracts",
     "shared.contracts_base_async",
     "shared.topics_async",
-    "spinal_cord.spinal_contracts_async_refactored_v2",
-    "brainstem.brainstem_contracts_async_refactored_v2",
+    "spinal_cord.contracts",
+    "brainstem.contracts",
 ])
 
 
@@ -51,8 +52,13 @@ async def run_demo_mock_cortex() -> None:
 
 
 async def run_demo_comms_router() -> None:
-    from communication.communication_contracts_async_v2 import demo_router
+    from communication.contracts import demo_router
     await demo_router()
+
+
+async def run_demo_spinal_brainstem() -> None:
+    from demos.spinal_brainstem import demo_spinal_brainstem
+    await demo_spinal_brainstem()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -61,32 +67,38 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--demo",
-        choices=["mock-cortex", "comms-router"],
+        choices=["mock-cortex", "comms-router", "spinal-brainstem"],
         default="mock-cortex",
         help="Which demo to run.",
     )
 
     args = parser.parse_args(argv)
 
-    # Sanity imports for your current tree structure
+    # Sanity imports - cerebrum modules
     _import_optional("cerebrum.subcortical.hypothalamus.hypothalamus_async")
     _import_optional("cerebrum.subcortical.basal_ganglia.basal_ganglia_async")
-    _import_optional("cerebrum.subcortical.limbic.limbic_interface_skeleton_aligned_async")
+    _import_optional("cerebrum.subcortical.limbic.limbic_async")
+    _import_optional("cerebrum.subcortical.thalamus.thalamus_async")
     _import_optional("cerebrum.cortex.mock_cortex_async")
-    _import_optional("communication.communication_contracts_async_v2")
 
-    # Pattern A sanity imports
+    # Sanity imports - shared and contracts
     _import_optional("shared.contracts_base_async")
     _import_optional("shared.topics_async")
-    _import_optional("spinal_cord.spinal_contracts_async_refactored_v2")
-    _import_optional("brainstem.brainstem_contracts_async_refactored_v2")
+    _import_optional("communication.contracts")
+    _import_optional("spinal_cord.contracts")
+    _import_optional("brainstem.contracts")
 
+    # Demos
     if args.demo == "mock-cortex":
         asyncio.run(run_demo_mock_cortex())
         return 0
 
     if args.demo == "comms-router":
         asyncio.run(run_demo_comms_router())
+        return 0
+
+    if args.demo == "spinal-brainstem":
+        asyncio.run(run_demo_spinal_brainstem())
         return 0
 
     print("No runnable demo selected.")

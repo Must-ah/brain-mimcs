@@ -13,14 +13,14 @@ from shared.contracts_base_async import (
 )
 from shared.topics_async import topic_reflect_reject
 
-from spinal_cord.spinal_contracts_async_refactored_v2 import (
+from spinal_cord.contracts import (
     AfferentSignal,
     EfferentCommand,
     SpinalCord,
     topic_sc_aff,
 )
 
-from brainstem.brainstem_contracts_async_refactored_v2 import (
+from brainstem.contracts import (
     Brainstem,
     RelayBundle,
     topic_bs_relay,
