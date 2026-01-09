@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "meta.schema.json",
+  "title": "Meta (universal envelope header)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "minLength": 8,
+      "description": "ULID or UUID"
+    },
+    "schema_version": {
+      "type": "string",
+      "description": "Contract schema version, e.g., v1 or v1.1"
+    },
+    "contract": {
+      "type": "string",
+      "minLength": 1
+    },
+    "message_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "origin_plane": {
+      "type": "string",
+      "enum": [
+        "spinal",
+        "brainstem",
+        "thalamus",
+        "cortex",
+        "reliable",
+        "reflect",
+        "gateway",
+        "unknown"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Producer identity: service name or device:<id>"
+    },
+    "device": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "device_id": {
+          "type": "string"
+        },
+        "hardware_id": {
+          "type": "string"
+        }
+      }
+    },
+    "scope_level": {
+      "type": "string",
+      "enum": [
+        "device",
+        "room",
+        "house",
+        "user_session"
+      ]
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "produced_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO UTC for humans"
+    },
+    "hlc": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "wall_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "logical": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "node": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "wall_ms",
+        "logical",
+        "node"
+      ]
+    },
+    "trace_id": {
+      "type": "string"
+    },
+    "span_id": {
+      "type": "string"
+    },
+    "parent_span_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ttl_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "deadline_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "qos_hint": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2,
+      "description": "MQTT QoS hint (0/1/2). Not enforced by broker."
+    },
+    "action_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Idempotency key for commands (required by Command/EfferentCommand)"
+    },
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "application/json",
+        "application/cbor"
+      ]
+    },
+    "content_encoding": {
+      "type": "string",
+      "enum": [
+        "identity",
+        "gzip"
+      ]
+    },
+    "auth": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true,
+      "description": "Reserved for future: auth context, signatures, token refs"
+    },
+    "reply_to": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional reply topic or URL"
+    },
+    "destination": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional (pub/sub usually implies destination via topic)"
+    }
+  },
+  "required": [
+    "message_id",
+    "schema_version",
+    "contract",
+    "message_type",
+    "origin_plane",
+    "source",
+    "scope_level",
+    "scope",
+    "produced_at"
+  ],
+  "description": "Universal header for all wire messages. For each contract schema, contract and message_type are set to identical constants."
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "RelayBundle.schema.json",
+  "title": "RelayBundle",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "allOf": [
+        {
+          "$ref": "meta.schema.json"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "v1"
+            },
+            "contract": {
+              "const": "RelayBundle"
+            },
+            "message_type": {
+              "const": "RelayBundle"
+            },
+            "origin_plane": {
+              "enum": [
+                "brainstem"
+              ]
+            }
+          },
+          "required": [
+            "schema_version",
+            "contract",
+            "message_type"
+          ]
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "channel": {
+          "type": "string",
+          "minLength": 1
+        },
+        "window_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "summary_features": {
+          "type": "object"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "salience": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      },
+      "required": [
+        "channel",
+        "window_ms",
+        "summary_features"
+      ]
+    }
+  },
+  "required": [
+    "meta",
+    "payload"
+  ]
+}

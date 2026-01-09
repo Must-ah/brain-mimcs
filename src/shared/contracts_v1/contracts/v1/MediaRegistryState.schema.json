@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "MediaRegistryState.schema.json",
+  "title": "MediaRegistryState",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "allOf": [
+        {
+          "$ref": "meta.schema.json"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "v1"
+            },
+            "contract": {
+              "const": "MediaRegistryState"
+            },
+            "message_type": {
+              "const": "MediaRegistryState"
+            },
+            "origin_plane": {
+              "enum": [
+                "spinal",
+                "gateway"
+              ]
+            }
+          },
+          "required": [
+            "schema_version",
+            "contract",
+            "message_type"
+          ]
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "gateway_base": {
+          "type": "string",
+          "format": "uri"
+        },
+        "offer_path_template": {
+          "type": "string",
+          "minLength": 1
+        },
+        "streams": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "gateway_base",
+        "offer_path_template"
+      ]
+    }
+  },
+  "required": [
+    "meta",
+    "payload"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "Command.schema.json",
+  "title": "Command",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "allOf": [
+        {
+          "$ref": "meta.schema.json"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "v1"
+            },
+            "contract": {
+              "const": "Command"
+            },
+            "message_type": {
+              "const": "Command"
+            },
+            "origin_plane": {
+              "enum": [
+                "reliable",
+                "cortex"
+              ]
+            }
+          },
+          "required": [
+            "schema_version",
+            "contract",
+            "message_type",
+            "action_id"
+          ]
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "device_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actuator_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "command": {
+          "type": "object",
+          "description": "Actuation intent; domain-specific"
+        },
+        "safety_constraints": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "device_id",
+        "actuator_type",
+        "command"
+      ]
+    }
+  },
+  "required": [
+    "meta",
+    "payload"
+  ]
+}

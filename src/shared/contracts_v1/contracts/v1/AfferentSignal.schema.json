@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "AfferentSignal.schema.json",
+  "title": "AfferentSignal",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "allOf": [
+        {
+          "$ref": "meta.schema.json"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "v1"
+            },
+            "contract": {
+              "const": "AfferentSignal"
+            },
+            "message_type": {
+              "const": "AfferentSignal"
+            },
+            "origin_plane": {
+              "enum": [
+                "spinal"
+              ]
+            }
+          },
+          "required": [
+            "schema_version",
+            "contract",
+            "message_type"
+          ]
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "sensor_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reading": {
+          "type": [
+            "object",
+            "number",
+            "string",
+            "boolean",
+            "array",
+            "null"
+          ]
+        },
+        "units": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "salience": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      },
+      "required": [
+        "sensor_type",
+        "reading"
+      ]
+    }
+  },
+  "required": [
+    "meta",
+    "payload"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "RejectEvent.schema.json",
+  "title": "RejectEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "allOf": [
+        {
+          "$ref": "meta.schema.json"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "v1"
+            },
+            "contract": {
+              "const": "RejectEvent"
+            },
+            "message_type": {
+              "const": "RejectEvent"
+            },
+            "origin_plane": {
+              "enum": [
+                "reflect"
+              ]
+            }
+          },
+          "required": [
+            "schema_version",
+            "contract",
+            "message_type"
+          ]
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rejected_topic": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rejected_contract": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "details": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "reason"
+      ]
+    }
+  },
+  "required": [
+    "meta",
+    "payload"
+  ]
+}

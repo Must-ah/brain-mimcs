@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "Outcome.schema.json",
+  "title": "Outcome",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "allOf": [
+        {
+          "$ref": "meta.schema.json"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "v1"
+            },
+            "contract": {
+              "const": "Outcome"
+            },
+            "message_type": {
+              "const": "Outcome"
+            },
+            "origin_plane": {
+              "enum": [
+                "reliable",
+                "spinal",
+                "brainstem",
+                "cortex"
+              ]
+            }
+          },
+          "required": [
+            "schema_version",
+            "contract",
+            "message_type"
+          ]
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "failed",
+            "denied",
+            "timeout"
+          ]
+        },
+        "details": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "error": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "status"
+      ]
+    }
+  },
+  "required": [
+    "meta",
+    "payload"
+  ]
+}

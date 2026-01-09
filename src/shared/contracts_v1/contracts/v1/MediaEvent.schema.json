@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "MediaEvent.schema.json",
+  "title": "MediaEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "allOf": [
+        {
+          "$ref": "meta.schema.json"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schema_version": {
+              "const": "v1"
+            },
+            "contract": {
+              "const": "MediaEvent"
+            },
+            "message_type": {
+              "const": "MediaEvent"
+            },
+            "origin_plane": {
+              "enum": [
+                "spinal"
+              ]
+            }
+          },
+          "required": [
+            "schema_version",
+            "contract",
+            "message_type"
+          ]
+        }
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "event": {
+          "type": "string",
+          "minLength": 1
+        },
+        "media_kind": {
+          "type": "string",
+          "enum": [
+            "video",
+            "audio",
+            "av",
+            "image"
+          ]
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      },
+      "required": [
+        "event",
+        "media_kind"
+      ]
+    }
+  },
+  "required": [
+    "meta",
+    "payload"
+  ]
+}

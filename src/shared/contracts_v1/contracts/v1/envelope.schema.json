@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "envelope.schema.json",
+  "title": "Envelope (meta + payload)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "$ref": "meta.schema.json"
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "meta",
+    "payload"
+  ]
+}
