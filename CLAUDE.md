@@ -68,6 +68,25 @@ brain-mimc is a brain-inspired software architecture modeling hierarchical, asyn
 
 Basal ganglia suppresses all actions unless explicitly released.
 
+### 8. Communication Pattern (Brain-Faithful)
+
+The brain does NOT use continuous streaming. Transformation to discrete events happens at the sensor:
+- **Retina**: Edge detection, contrast, motion → RGC spikes (not raw pixels)
+- **Cochlea**: Frequency decomposition → spike patterns (not raw audio)
+- **Mechanoreceptors**: Adaptation (onset/offset only) → nerve spikes
+
+This validates:
+- Typed async pub-sub over continuous streaming
+- "Raw never goes up" at every level including sensors
+- Publish-on-change pattern (like receptor adaptation)
+
+### 9. Failure Modes (Brain-Faithful)
+
+- **Critical infrastructure** (brainstem equivalents): Failure = system down
+- **Processing components** (cortical equivalents): Failure = degraded function, not cascade
+- **Redundant pathways** exist for most functions
+- **No cascading failures** from peripheral component loss
+
 ## Commands
 
 ```bash

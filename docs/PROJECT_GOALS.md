@@ -210,18 +210,23 @@ Connect components via shared TopicBus. No code changes - just wiring.
 | V15 | Hardware heterogeneity is a GENERAL principle | User confirmed | Applies to whole system, not just thalamus - any part may run on different hardware |
 | V16 | Decide at lowest possible level | User stated | Decisions made at lowest region/hardware possible; only escalate to higher areas when lower cannot decide |
 | V17 | Hardware mapping is TBD | User stated | What maps to hardware (layers vs regions vs areas) not yet decided |
+| V18 | No central orchestrator | neuro-expert (KB) | Routes pre-wired in anatomy; broadcast modulation sets state but doesn't orchestrate |
+| V19 | Components can function standalone | neuro-expert (KB) | Spinal reflexes, CPGs work in isolation; cortex survives spinal injury |
+| V20 | Graceful degradation EXCEPT critical infrastructure | neuro-expert (KB) | Processing components degrade gracefully; critical infra (brainstem) = single point of failure |
+| V21 | Pub-sub over continuous streaming | neuro-expert (KB) | Brain converts continuous input to discrete events at sensor level (retina, cochlea, mechanoreceptors) |
+| V22 | "Raw never goes up" validated at sensor level | neuro-expert (KB) | Retina does edge detection, cochlea does frequency decomposition BEFORE transmitting |
 
 ### Items Requiring Discussion
 
 | # | Item | Status | Original | Final | Rationale |
 |---|------|--------|----------|-------|-----------|
 | 1 | "Not a simulation" framing | RESOLVED | I added without discussion | "Simulates brain organization with neuroscience-accurate granularity (nuclei, layers, pathways) but not biological processes (neurons, neurotransmitters)" | User confirmed this framing |
-| 2 | "No orchestrator" claim | DEFERRED→EXPERT | I inferred from parallelism | TBD | Expert agent to answer: does brain have central orchestrator? |
+| 2 | "No orchestrator" claim | RESOLVED | I inferred from parallelism | YES - Brain-faithful | See V18. Routes pre-wired, broadcast modulation sets state (not orchestration) |
 | 3 | Phase 1/2/3 structure | PENDING | I invented this | TBD | TBD |
 | 4 | Priority assignments | PENDING | I invented this | TBD | TBD |
-| 5 | "Each component works standalone" | DEFERRED→EXPERT | I inferred this | TBD | Expert agent to answer: can brain regions function in isolation? |
-| 6 | "Failures degrade gracefully" | DEFERRED→EXPERT | I inferred this | TBD | Expert agent to answer: brain's failure modes? |
-| 7 | Continuous streaming vs pub/sub | DEFERRED→EXPERT | User raised | TBD | Expert agent to answer: brain's actual communication patterns |
+| 5 | "Each component works standalone" | RESOLVED | I inferred this | YES - Brain-faithful | See V19. Spinal reflexes, CPGs work in isolation |
+| 6 | "Failures degrade gracefully" | RESOLVED | I inferred this | PARTIAL - Add exception | See V20. Critical infra (brainstem) = single point of failure |
+| 7 | Continuous streaming vs pub/sub | RESOLVED | User raised | Pub-sub MORE brain-faithful | See V21-V22. Sensors transform to discrete events |
 | 8 | Expert agent/skill creation | RESOLVED | User raised | See plan file | SEPARATE neuro + arch experts (accuracy-first) |
 | 9 | Hardware heterogeneity at layer level | RESOLVED | User raised | See V14-V17 | Confirmed as general principle; hardware mapping TBD |
 
