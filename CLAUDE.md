@@ -2,6 +2,114 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+---
+
+## STOP — READ BEFORE ANY ACTION
+
+### Rule 0: Git Workflow (MANDATORY — NO EXCEPTIONS)
+
+**Claude must NEVER commit directly to main.**
+
+**BEFORE doing ANY work:**
+
+```bash
+# Step 1: Check current branch
+git branch --show-current
+
+# Step 2: If output is "main", STOP and create feature branch FIRST
+git checkout -b feature/<task-name>
+
+# Step 3: Only THEN proceed with work
+```
+
+**This applies to:**
+- "Quick" changes
+- "Small" fixes
+- "Just one file" edits
+- ALL changes, no matter how trivial
+
+**Branch naming:**
+- `feature/<description>` — new functionality
+- `fix/<description>` — bug fixes
+
+**Merge to main only when:**
+1. Task is COMPLETE
+2. Code works
+3. You are ready to delete the feature branch
+
+**Why:** Main stays stable. Incomplete work never pollutes main. Failed experiments are easy to abandon.
+
+---
+
+### Rule 1: Expert Consultation Protocol (MANDATORY)
+
+**Claude must NOT make neuroscience or architecture decisions alone.**
+
+**This is a STOP-AND-PRESENT protocol, not a "launch agents" protocol.**
+
+#### Triggers — When This Rule Applies
+
+You MUST follow this protocol when:
+- Designing new components or modules
+- Proposing changes to Core Principles (sections 1-10 below)
+- Naming brain structures, pathways, or regions
+- Adding or modifying connections between components
+- Adding to Verified items (V-series in PROJECT_GOALS.md)
+- Choosing implementation approach for any brain region
+- Answering "should this be..." questions
+
+#### The Protocol (Step-by-Step)
+
+**Step 1: STOP**
+Do not write code. Do not make the decision. Do not proceed.
+
+**Step 2: Present NEURO perspective**
+Label it clearly: `## Neuro-Expert Perspective`
+- What does the biological brain actually do here?
+- Cite the knowledge base (`docs/knowledgebase/brain/`) or scientific literature
+- If KB is unverified for this topic, say so explicitly
+- State confidence level (verified, partial, uncertain)
+
+**Step 3: Present ARCH perspective**
+Label it clearly: `## Architecture-Expert Perspective`
+- What are the software implementation options?
+- What are the tradeoffs (complexity, performance, maintainability)?
+- Which patterns from the codebase apply?
+- What are the failure modes of each option?
+
+**Step 4: Present the tension (if any)**
+Label it clearly: `## Tension / Tradeoffs`
+- Where do neuro-faithfulness and software practicality conflict?
+- What compromises exist?
+
+**Step 5: WAIT for user decision**
+End with: "How would you like to proceed?"
+Do NOT proceed until user explicitly decides.
+
+**Step 6: Document the decision**
+After user decides:
+- Update CLAUDE.md if it affects Core Principles
+- Update PROJECT_GOALS.md V-series if it's a verified item
+- Add inline comments in code referencing the decision
+
+#### What Claude Must NEVER Do
+
+- Make brain-faithfulness judgments without presenting neuro perspective
+- Choose architecture patterns without presenting arch perspective
+- Add verified items without user validation
+- Name brain structures without presenting neuro perspective
+- Assume silence means approval — always wait for explicit decision
+
+#### Quick Checks (User-Initiated)
+
+User can request lightweight versions:
+- "neuro-check: [question]" — Claude gives only neuro perspective
+- "arch-check: [question]" — Claude gives only arch perspective
+
+These skip the full protocol but still require Claude to present reasoning before user decides.
+
+---
+
 ## Project Overview
 
 brain-mimc is a brain-inspired software framework modeling hierarchical, asynchronous communication inspired by neural anatomy. It uses a pub-sub model with multiple "planes" (lanes) similar to neural tracts.
@@ -28,10 +136,10 @@ brain-mimc is a brain-inspired software framework modeling hierarchical, asynchr
 
 | Loop | Path | Purpose |
 |------|------|---------|
-| A | Cortex ↔ Thalamus ↔ Cortex | Routing + Attention |
-| B | Cortex → BG → Thalamus → Cortex | Action Selection |
-| C | Cortex → Cerebellum → Thalamus → Cortex | Calibration |
-| D | Limbic → Hypothalamus → Brainstem → Body | Regulation |
+| A | Cortex - Thalamus - Cortex | Routing + Attention |
+| B | Cortex - BG - Thalamus - Cortex | Action Selection |
+| C | Cortex - Cerebellum - Thalamus - Cortex | Calibration |
+| D | Limbic - Hypothalamus - Brainstem - Body | Regulation |
 
 ### 3. Thalamus: Nucleus-Based Architecture
 
@@ -40,8 +148,8 @@ brain-mimc is a brain-inspired software framework modeling hierarchical, asynchr
 | Class | Nuclei | Role |
 |-------|--------|------|
 | First-order | LGN, MGN, VPL/VPM, VA/VL | Relay external world to primary cortex L4 |
-| Higher-order | Pulvinar, MD, LP/LD | Cortex-to-cortex routing (L5 → association cortex) |
-| Diffuse | CM, Pf, CL, PVT | Arousal, state (brainstem → widespread cortex) |
+| Higher-order | Pulvinar, MD, LP/LD | Cortex-to-cortex routing (L5 to association cortex) |
+| Diffuse | CM, Pf, CL, PVT | Arousal, state (brainstem to widespread cortex) |
 | Gate | TRN | Attention gating (inhibits relay nuclei) |
 
 ### 4. Cortex Layer Semantics
@@ -71,9 +179,9 @@ Basal ganglia suppresses all actions unless explicitly released.
 ### 8. Communication Pattern (Brain-Faithful)
 
 The brain does NOT use continuous streaming. Transformation to discrete events happens at the sensor:
-- **Retina**: Edge detection, contrast, motion → RGC spikes (not raw pixels)
-- **Cochlea**: Frequency decomposition → spike patterns (not raw audio)
-- **Mechanoreceptors**: Adaptation (onset/offset only) → nerve spikes
+- **Retina**: Edge detection, contrast, motion to RGC spikes (not raw pixels)
+- **Cochlea**: Frequency decomposition to spike patterns (not raw audio)
+- **Mechanoreceptors**: Adaptation (onset/offset only) to nerve spikes
 
 This validates:
 - Typed async pub-sub over continuous streaming
@@ -103,72 +211,7 @@ Build components in brain-faithful order (per V24):
 - Phase 1: Contracts + Minimal Concurrent Stubs (all components exist from day one)
 - Phase 2: Concurrent Elaboration (integration is continuous, not a final phase)
 
-### 11. Mandatory Expert Consultation
-
-**CRITICAL:** Claude must NOT make neuroscience or architecture decisions alone.
-
-**Both experts required for:**
-- New component/module design
-- Changes to Core Principles (1-10)
-- Naming brain structures/pathways
-- Adding connections between components
-- Adding to Verified items (V-series)
-- Implementation approach for any brain region
-
-**How it works:**
-1. Claude recognizes a decision is needed
-2. Claude launches neuro-expert AND brain-software-arch-expert
-3. Both experts discuss and provide recommendations
-4. User makes final decision
-5. Decision is documented (V-series or CLAUDE.md update)
-
-**Triggers (Claude proactively launches experts):**
-- "Should this be..." questions
-- Designing anything new
-- Naming anything brain-related
-- Connecting components
-- Changing established patterns
-
-**User can also request anytime:**
-- Quick check: `/neuro-check` or `/arch-check`
-- Full discussion: Ask for both experts
-
-**Claude must NEVER:**
-- Make brain-faithfulness judgments alone
-- Choose architecture patterns without arch-expert
-- Add verified items without expert validation
-- Name brain structures without neuro-expert
-
-### 12. Git Workflow (Feature Branches)
-
-**CRITICAL:** Claude must NEVER commit directly to main branch.
-
-**Pre-Commit Checklist (MANDATORY):**
-1. Verify on feature branch: `git branch --show-current` (must NOT be "main")
-2. If on main: `git checkout -b feature/<task-name>` FIRST
-3. Only then: commit changes
-
-**Branch Naming:**
-- `feature/<description>` - new functionality
-- `fix/<description>` - bug fixes
-
-**Workflow:**
-1. Create branch BEFORE any work begins
-2. All work happens on feature branch
-3. Commit and push to feature branch
-4. Merge to main only when task is COMPLETE
-5. Delete feature branch after merge
-
-**Claude must NEVER:**
-- Commit directly to main
-- Push to main without merging from feature branch
-- Skip branching for "quick" or "small" changes
-- Assume any change is too small for a branch
-
-**Why This Matters:**
-- Main branch stays stable
-- Incomplete work never pollutes main
-- Easy to abandon failed experiments
+---
 
 ## Commands
 
@@ -184,13 +227,17 @@ python main.py --demo comms-router   # Run communications router demo
 
 ```
 SpinalCord (Edge I/O + Reflex)
-    ↓ AfferentSignals (raw sensor data)
+    | AfferentSignals (raw sensor data)
+    v
 Brainstem (Relay + Pattern + Global Broadcast)
-    ↓ RelayBundles (typed summaries)
+    | RelayBundles (typed summaries)
+    v
 Thalamus (Gating/routing nucleus)
-    ↓ RouteDecision (to cortex areas/layers)
+    | RouteDecision (to cortex areas/layers)
+    v
 Cortex (Decision/perception)
-    ↓ Commands (via motor path)
+    | Commands (via motor path)
+    v
 SpinalCord (Efferent actuator commands)
 
 Subcortical modules:
@@ -203,20 +250,20 @@ Subcortical modules:
 
 See `src/cerebrum/subcortical/thalamus/ARCHITECTURE_GOALS.md` for full details.
 
-- **Loop A**: Cortex <-> Thalamus <-> Cortex (routing + attention coordination)
-- **Loop B**: Cortex -> Basal Ganglia -> Thalamus -> Cortex (action selection)
-- **Loop C**: Cortex -> Cerebellum -> Thalamus -> Cortex (timing/calibration)
-- **Loop D**: Limbic -> Hypothalamus -> Brainstem (body regulation)
+- **Loop A**: Cortex - Thalamus - Cortex (routing + attention coordination)
+- **Loop B**: Cortex - Basal Ganglia - Thalamus - Cortex (action selection)
+- **Loop C**: Cortex - Cerebellum - Thalamus - Cortex (timing/calibration)
+- **Loop D**: Limbic - Hypothalamus - Brainstem (body regulation)
 
 ### Communication Lanes
 
 | Lane | Purpose | Direction |
 |------|---------|-----------|
-| A (DRIVER) | Payload/content | SpinalCord → Brainstem → Thalamus → Cortex |
-| B (MODULATOR) | Feedback/attention control | Cortex → Thalamus/TRN |
-| C (COMMAND) | Motor commands | Cortex → Brainstem → SpinalCord |
-| D (GLOBAL MODES) | Neuromodulators | Hypothalamus/Brainstem → ALL |
-| E (ERROR/OUTCOME) | Learning signals | SpinalCord/Limbic → Cortex/BG |
+| A (DRIVER) | Payload/content | SpinalCord to Brainstem to Thalamus to Cortex |
+| B (MODULATOR) | Feedback/attention control | Cortex to Thalamus/TRN |
+| C (COMMAND) | Motor commands | Cortex to Brainstem to SpinalCord |
+| D (GLOBAL MODES) | Neuromodulators | Hypothalamus/Brainstem to ALL |
+| E (ERROR/OUTCOME) | Learning signals | SpinalCord/Limbic to Cortex/BG |
 | G (GATE) | TRN inhibition state | Distributed control-plane |
 | X (REFLECTION) | Audit/observability | Non-blocking copies |
 
@@ -279,62 +326,21 @@ Designed for 3-broker Mosquitto topology (not yet implemented):
 
 Cross-broker rule: Only transformed RelayBundles cross boundaries (no raw sensor floods).
 
-## Expert Agents & Skills
+## Knowledge Base
 
-This project uses specialized agents and skills for quality assurance:
+Location: `docs/knowledgebase/brain/` (24 content files)
 
-### Agents (Deep Analysis)
-
-| Agent | Purpose |
-|-------|---------|
-| `neuro-expert` | Neuroscience verification - KB management, codebase audits, brain-faithfulness |
-| `brain-software-arch-expert` | Architecture stress-testing - 5 modes, pattern validation, bulletproof protocol |
-
-### Skills (Quick Checks)
-
-| Skill | Purpose |
-|-------|---------|
-| `/neuro-check` | Quick inline brain-faithfulness validation |
-| `/arch-check` | Quick inline architecture pattern validation |
-
-### Three-Way Discussion Model
-
-For architectural decisions, both experts discuss WITH EACH OTHER before user decides:
-- neuro-expert provides scientific backing (with citations)
-- brain-software-arch-expert provides implementation patterns
-- User observes, guides, and makes final decision
-
-### Key Boundaries
-
-- Experts do NOT write code (advise only)
-- Experts do NOT make final decisions (user decides)
-- All KB content assumed WRONG until verified against scientific papers
-
-### Knowledge Base Prerequisite
-
-**Current Status:** FULLY VERIFIED (2026-01-10) - All 24 files verified via neuro-expert agent
-
-**CRITICAL:** Do NOT proceed with implementation until the knowledge base is verified.
-
-**Before Any Implementation:**
-1. Check `docs/knowledgebase/brain/verified.md` for KB status
-2. If files are UNVERIFIED or PENDING:
-   - STOP implementation work
-   - Run `neuro-expert` agent to verify KB first
-   - Wait for verification to complete
-3. Only proceed with implementation after KB verification is complete
-
-**KB Status Reference:**
+**Status tracking:** `docs/knowledgebase/brain/verified.md`
 
 | Status | Meaning | Action |
 |--------|---------|--------|
 | VERIFIED | Checked against papers | Safe to use |
 | PARTIAL | Some parts checked | Use only verified sections |
-| UNVERIFIED | Not checked | DO NOT USE - verify first |
-| PENDING | Awaiting verification | DO NOT USE - wait for verification |
+| UNVERIFIED | Not checked | State uncertainty when using |
+| PENDING | Awaiting verification | State uncertainty when using |
 | REJECTED | Found inaccurate | DO NOT USE - needs correction |
 
-Full specification: `~/.claude/plans/eager-beaming-barto.md`
+When using KB content in Expert Consultation Protocol, always state the verification status.
 
 ## Keeping This File Current
 
@@ -356,4 +362,3 @@ This prevents behavior drift across sessions.
 ## Reference Documents
 
 - **Full Project Goals:** `docs/PROJECT_GOALS.md` (verification log, detailed specs)
-- **Plan File:** `~/.claude/plans/eager-beaming-barto.md` (expert agent specs)
