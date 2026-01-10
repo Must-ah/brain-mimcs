@@ -103,6 +103,42 @@ Build components in brain-faithful order (per V24):
 - Phase 1: Contracts + Minimal Concurrent Stubs (all components exist from day one)
 - Phase 2: Concurrent Elaboration (integration is continuous, not a final phase)
 
+### 11. Mandatory Expert Consultation
+
+**CRITICAL:** Claude must NOT make neuroscience or architecture decisions alone.
+
+**Both experts required for:**
+- New component/module design
+- Changes to Core Principles (1-10)
+- Naming brain structures/pathways
+- Adding connections between components
+- Adding to Verified items (V-series)
+- Implementation approach for any brain region
+
+**How it works:**
+1. Claude recognizes a decision is needed
+2. Claude launches neuro-expert AND brain-software-arch-expert
+3. Both experts discuss and provide recommendations
+4. User makes final decision
+5. Decision is documented (V-series or CLAUDE.md update)
+
+**Triggers (Claude proactively launches experts):**
+- "Should this be..." questions
+- Designing anything new
+- Naming anything brain-related
+- Connecting components
+- Changing established patterns
+
+**User can also request anytime:**
+- Quick check: `/neuro-check` or `/arch-check`
+- Full discussion: Ask for both experts
+
+**Claude must NEVER:**
+- Make brain-faithfulness judgments alone
+- Choose architecture patterns without arch-expert
+- Add verified items without expert validation
+- Name brain structures without neuro-expert
+
 ## Commands
 
 ```bash
