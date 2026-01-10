@@ -208,6 +208,28 @@ For architectural decisions, both experts discuss WITH EACH OTHER before user de
 - Experts do NOT make final decisions (user decides)
 - All KB content assumed WRONG until verified against scientific papers
 
+### Knowledge Base Prerequisite
+
+**CRITICAL:** Do NOT proceed with implementation until the knowledge base is verified.
+
+**Before Any Implementation:**
+1. Check `docs/knowledgebase/brain/verified.md` for KB status
+2. If files are UNVERIFIED or PENDING:
+   - STOP implementation work
+   - Run `neuro-expert` agent to verify KB first
+   - Wait for verification to complete
+3. Only proceed with implementation after KB verification is complete
+
+**KB Status Reference:**
+
+| Status | Meaning | Action |
+|--------|---------|--------|
+| VERIFIED | Checked against papers | Safe to use |
+| PARTIAL | Some parts checked | Use only verified sections |
+| UNVERIFIED | Not checked | DO NOT USE - verify first |
+| PENDING | Awaiting verification | DO NOT USE - wait for verification |
+| REJECTED | Found inaccurate | DO NOT USE - needs correction |
+
 Full specification: `~/.claude/plans/eager-beaming-barto.md`
 
 ## Git Workflow
