@@ -26,6 +26,15 @@
 | P14 | Sara SJ (2009). The locus coeruleus and noradrenergic modulation of cognition. Nat Rev Neurosci 10:211-223 | Neuromodulation | Locus coeruleus, norepinephrine system | [PubMed](https://pubmed.ncbi.nlm.nih.gov/19190638/) |
 | P15 | Schultz W (1998). Predictive reward signal of dopamine neurons. J Neurophysiol 80:1-27 | Dopamine | Reward prediction error, VTA/SNc | [PubMed](https://pubmed.ncbi.nlm.nih.gov/9658025/) |
 
+### Local PDF Papers (Available in KB folder)
+
+| ID | Citation | Topic | Used For | File |
+|----|----------|-------|----------|------|
+| L1 | Sherman SM, Usrey WM (2024). Transthalamic Pathways for Cortical Function. J Neuroscience, August 2024 | Thalamic pathways | Driver/modulator distinction, L5/L6 CT pathways, higher-order thalamus, transthalamic routes | `Transthalamic-Pathways-for-Cortical-Function.pdf` |
+| L2 | (2025). Cerebellar circuit computations for predictive motor control. Nat Rev Neurosci | Cerebellum | Predictive control, population coding, multiple parallel modules | `Cerebellar circuit computations for predictive motor control.pdf` |
+| L3 | (2025). A Dual Inhibitory Network in the Thalamic Reticular Nucleus Delineated by Pallidal and Intra-Reticular Inhibition. bioRxiv | TRN | GPe->TRN inhibition, SOM->PV intra-TRN inhibition | `A Dual Inhibitory Network in the Thalamic Reticular Nucleus Delineated by Pallidal and Intra-Reticular Inhibition.pdf` |
+| L4 | Herzfeld DJ, Lisberger SG (2025). Neural circuit mechanisms to transform cerebellar population dynamics for motor control in monkeys. bioRxiv | Cerebellum | Cerebellar circuit computations, neuron type identification, granule cell temporal basis set | `Herzfeld-Lisberger-2025-Cerebellar-Circuit-Mechanisms-Motor-Control.pdf` |
+
 ### 2025 Papers (Added via WebSearch Verification)
 
 | ID | Citation | Topic | Used For | URL |

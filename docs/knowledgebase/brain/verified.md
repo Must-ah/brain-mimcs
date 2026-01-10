@@ -4,7 +4,7 @@
 >
 > **Verification Date:** 2026-01-10
 > **Verified By:** Claude Opus 4.5 (via WebSearch)
-> **Method:** WebSearch verification against latest papers (2025-2026)
+> **Method:** WebSearch verification against latest papers (2025-2026) + Local PDFs
 > **Status:** WEBSEARCH CONFIRMED - All key claims verified against actual papers with URLs
 
 ## Document Status
@@ -198,3 +198,25 @@ All documents are consistent with established neuroscience literature and can be
 5. **Neuromodulatory Systems:** All four major systems (NE from locus coeruleus, 5-HT from raphe, DA from VTA/SNc, ACh from basal forebrain/brainstem) correctly described with their targets and functions.
 
 6. **Cerebellar Computation:** Recent 2025 reviews confirm the error-correction model and add evidence for predictive/anticipatory control via population coding.
+
+## Local PDF Verification (2026-01-10)
+
+The following papers are available locally in the KB folder and were used for direct verification:
+
+| Paper | Citation | Key Confirmations |
+|-------|----------|-------------------|
+| `Transthalamic-Pathways-for-Cortical-Function.pdf` | Sherman SM, Usrey WM (2024). J Neuroscience | Driver/modulator distinction, L5 CT = drivers, L6 CT = modulators, transthalamic routes for cortex-to-cortex communication |
+| `Cerebellar circuit computations for predictive motor control.pdf` | (2025). Nat Rev Neurosci | Cerebellar predictive control, population coding, multiple parallel modules |
+| `A Dual Inhibitory Network in the Thalamic Reticular Nucleus...pdf` | (2025). bioRxiv | TRN dual inhibition: GPe→TRN and intra-TRN (SOM→PV) |
+
+### Sherman & Usrey 2024 Key Findings (Direct from PDF)
+
+This paper is highly relevant to the brain-mimc architecture. Key confirmations:
+
+1. **Driver vs Modulator (Class 1 vs Class 2):** Confirmed. Class 1 (drivers) have large boutons, high probability of release, ionotropic only. Class 2 (modulators) have small boutons, low release, metabotropic receptors.
+
+2. **L5 CT = Drivers, L6 CT = Modulators:** Confirmed. L5 corticothalamic projections provide driver input to higher-order thalamus. L6 CT provides modulatory feedback.
+
+3. **Transthalamic Routes:** Confirmed. Higher-order thalamic nuclei (pulvinar, MD, LP) enable cortex-to-cortex communication via L5 → HO thalamus → target cortex.
+
+4. **First-order vs Higher-order Nuclei:** Confirmed. First-order receives peripheral drivers. Higher-order receives cortical L5 drivers.

@@ -269,4 +269,4 @@ neuro-expert ←→ brain-software-arch-expert
 
 ### Knowledge Base
 
-Location: `./docs/knowledgebase/brain/` (26 files awaiting verification)
+Location: `./docs/knowledgebase/brain/` (24 content files VERIFIED - see `verified.md`)
