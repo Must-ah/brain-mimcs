@@ -2,7 +2,9 @@
 
 > **Purpose:** Track all scientific papers and references used to verify knowledge base content.
 >
-> **Status:** WEBSEARCH VERIFIED (2026-01-10) - All references confirmed via WebSearch against PubMed and recent literature.
+> **Status:** FULLY VERIFIED (2026-01-10)
+> **Latest Update:** Fresh re-verification of all 24 KB files via neuro-expert agent
+> **Method:** WebSearch against PubMed, Nature, eLife, bioRxiv + local PDF papers
 
 ## Papers Referenced
 
