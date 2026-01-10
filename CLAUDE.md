@@ -43,9 +43,7 @@ git checkout -b feature/<task-name>
 
 ### Rule 1: Expert Consultation Protocol (MANDATORY)
 
-**Claude must NOT make neuroscience or architecture decisions alone.**
-
-**This is a STOP-AND-PRESENT protocol, not a "launch agents" protocol.**
+**Claude must invoke the expert agents - NOT just present perspectives inline.**
 
 #### Triggers - When This Rule Applies
 
@@ -63,30 +61,44 @@ You MUST follow this protocol when:
 **Step 1: STOP**
 Do not write code. Do not make the decision. Do not proceed.
 
-**Step 2: Present NEURO perspective**
-Label it clearly: `## Neuro-Expert Perspective`
-- What does the biological brain actually do here?
-- Cite the knowledge base (`docs/knowledgebase/brain/`) or scientific literature
-- If KB is unverified for this topic, say so explicitly
-- State confidence level (verified, partial, uncertain)
+**Step 2: Invoke BOTH expert agents (in parallel)**
+Use the Task tool to launch both agents simultaneously:
 
-**Step 3: Present ARCH perspective**
-Label it clearly: `## Architecture-Expert Perspective`
-- What are the software implementation options?
-- What are the tradeoffs (complexity, performance, maintainability)?
-- Which patterns from the codebase apply?
-- What are the failure modes of each option?
+```
+Task(subagent_type="neuro-expert")
+Task(subagent_type="brain-software-arch-expert")
+```
 
-**Step 4: Present the tension (if any)**
-Label it clearly: `## Tension / Tradeoffs`
-- Where do neuro-faithfulness and software practicality conflict?
-- What compromises exist?
+Give each agent:
+- The specific question/decision at hand
+- Relevant context from the codebase
+- Reference to CLAUDE.md and PROJECT_GOALS.md
 
-**Step 5: WAIT for user decision**
+**Step 3: Synthesize findings**
+After both agents return, summarize their perspectives:
+
+```
+## Neuro-Expert Findings
+[Summary of what neuro-expert reported]
+- Key points
+- Citations/sources
+- Confidence level
+
+## Architecture-Expert Findings
+[Summary of what arch-expert reported]
+- Key points
+- Pattern recommendations
+- Tradeoffs identified
+
+## Tensions / Conflicts (if any)
+[Where the two perspectives disagree or create tradeoffs]
+```
+
+**Step 4: WAIT for user decision**
 End with: "How would you like to proceed?"
 Do NOT proceed until user explicitly decides.
 
-**Step 6: Document the decision**
+**Step 5: Document the decision**
 After user decides:
 - Update CLAUDE.md if it affects Core Principles
 - Update PROJECT_GOALS.md V-series if it's a verified item
@@ -94,19 +106,31 @@ After user decides:
 
 #### What Claude Must NEVER Do
 
-- Make brain-faithfulness judgments without presenting neuro perspective
-- Choose architecture patterns without presenting arch perspective
+- Make brain-faithfulness judgments without invoking neuro-expert
+- Choose architecture patterns without invoking brain-software-arch-expert
+- Present "perspectives" inline instead of actually invoking the agents
 - Add verified items without user validation
-- Name brain structures without presenting neuro perspective
 - Assume silence means approval - always wait for explicit decision
 
 #### Quick Checks (User-Initiated)
 
-User can request lightweight versions:
-- "neuro-check: [question]" - Claude gives only neuro perspective
-- "arch-check: [question]" - Claude gives only arch perspective
+For lightweight questions, user can request skills instead of full agents:
+- `/neuro-check` - Quick brain-faithfulness check (uses Skill tool)
+- `/arch-check` - Quick architecture pattern check (uses Skill tool)
 
 These skip the full protocol but still require Claude to present reasoning before user decides.
+
+#### When to Use Agents vs Skills
+
+| Situation | Use |
+|-----------|-----|
+| New component design | AGENTS (both) |
+| Naming brain structures | AGENTS (neuro-expert) |
+| "Is this pattern correct?" | SKILL (/arch-check) |
+| "Is this brain-faithful?" | SKILL (/neuro-check) |
+| Changes to Core Principles | AGENTS (both) |
+| Deep analysis needed | AGENTS |
+| Quick validation | SKILLS |
 
 ---
 
@@ -341,6 +365,33 @@ Location: `docs/knowledgebase/brain/` (24 content files)
 | REJECTED | Found inaccurate | DO NOT USE - needs correction |
 
 When using KB content in Expert Consultation Protocol, always state the verification status.
+
+## Expert Agents
+
+Location: `.claude/agents/`
+
+| Agent | Model | Purpose |
+|-------|-------|---------|
+| `neuro-expert` | Opus | Neuroscience verification, KB management, brain-faithfulness |
+| `brain-software-arch-expert` | Opus | Architecture stress-testing, pattern validation, bulletproof protocol |
+
+**Invocation:** Use Task tool with `subagent_type` parameter.
+
+**Key boundaries:**
+- Agents advise only - they do NOT write code
+- Agents do NOT make final decisions - user decides
+- All KB content assumed WRONG until verified against scientific papers
+
+## Skills (Quick Checks)
+
+Location: `.claude/skills/`
+
+| Skill | Purpose |
+|-------|---------|
+| `/neuro-check` | Quick inline brain-faithfulness validation |
+| `/arch-check` | Quick inline architecture pattern validation |
+
+**Invocation:** User types the skill command, Claude uses Skill tool.
 
 ## Keeping This File Current
 
