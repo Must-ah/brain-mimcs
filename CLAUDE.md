@@ -37,6 +37,15 @@ Subcortical modules:
   - Limbic: memory/salience/emotion
 ```
 
+### Major Loops (Target Architecture)
+
+See `src/cerebrum/subcortical/thalamus/ARCHITECTURE_GOALS.md` for full details.
+
+- **Loop A**: Cortex <-> Thalamus <-> Cortex (routing + attention coordination)
+- **Loop B**: Cortex -> Basal Ganglia -> Thalamus -> Cortex (action selection)
+- **Loop C**: Cortex -> Cerebellum -> Thalamus -> Cortex (timing/calibration)
+- **Loop D**: Limbic -> Hypothalamus -> Brainstem (body regulation)
+
 ### Communication Lanes
 
 | Lane | Purpose | Direction |
@@ -80,6 +89,7 @@ src/
     ├── cortex/       # Decision layer with L4/L5/L6 feedback
     └── subcortical/
         ├── thalamus/     # ThalamicEnvelope, RouteDecision, GateState
+        │                 # See ARCHITECTURE_GOALS.md for nucleus-based target design
         ├── hypothalamus/ # HomeostaticState, RegulationDecision
         ├── basal_ganglia/# CandidateAction, SelectionDecision, BGPathway
         └── limbic/       # EpisodicMemoryTrace, RetrievalResult
@@ -106,3 +116,36 @@ Designed for 3-broker Mosquitto topology (not yet implemented):
 - Broker 3 (Reliable): Lanes C, E, X - Port 18833
 
 Cross-broker rule: Only transformed RelayBundles cross boundaries (no raw sensor floods).
+
+## Expert Agents & Skills
+
+This project uses specialized agents and skills for quality assurance:
+
+### Agents (Deep Analysis)
+
+| Agent | Purpose |
+|-------|---------|
+| `neuro-expert` | Neuroscience verification - KB management, codebase audits, brain-faithfulness |
+| `brain-software-arch-expert` | Architecture stress-testing - 5 modes, pattern validation, bulletproof protocol |
+
+### Skills (Quick Checks)
+
+| Skill | Purpose |
+|-------|---------|
+| `/neuro-check` | Quick inline brain-faithfulness validation |
+| `/arch-check` | Quick inline architecture pattern validation |
+
+### Three-Way Discussion Model
+
+For architectural decisions, both experts discuss WITH EACH OTHER before user decides:
+- neuro-expert provides scientific backing (with citations)
+- brain-software-arch-expert provides implementation patterns
+- User observes, guides, and makes final decision
+
+### Key Boundaries
+
+- Experts do NOT write code (advise only)
+- Experts do NOT make final decisions (user decides)
+- All KB content assumed WRONG until verified against scientific papers
+
+Full specification: `~/.claude/plans/eager-beaming-barto.md`
