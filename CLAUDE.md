@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
-## STOP — READ BEFORE ANY ACTION
+## STOP - READ BEFORE ANY ACTION
 
-### Rule 0: Git Workflow (MANDATORY — NO EXCEPTIONS)
+### Rule 0: Git Workflow (MANDATORY - NO EXCEPTIONS)
 
 **Claude must NEVER commit directly to main.**
 
@@ -29,8 +29,8 @@ git checkout -b feature/<task-name>
 - ALL changes, no matter how trivial
 
 **Branch naming:**
-- `feature/<description>` — new functionality
-- `fix/<description>` — bug fixes
+- `feature/<description>` - new functionality
+- `fix/<description>` - bug fixes
 
 **Merge to main only when:**
 1. Task is COMPLETE
@@ -47,7 +47,7 @@ git checkout -b feature/<task-name>
 
 **This is a STOP-AND-PRESENT protocol, not a "launch agents" protocol.**
 
-#### Triggers — When This Rule Applies
+#### Triggers - When This Rule Applies
 
 You MUST follow this protocol when:
 - Designing new components or modules
@@ -98,13 +98,13 @@ After user decides:
 - Choose architecture patterns without presenting arch perspective
 - Add verified items without user validation
 - Name brain structures without presenting neuro perspective
-- Assume silence means approval — always wait for explicit decision
+- Assume silence means approval - always wait for explicit decision
 
 #### Quick Checks (User-Initiated)
 
 User can request lightweight versions:
-- "neuro-check: [question]" — Claude gives only neuro perspective
-- "arch-check: [question]" — Claude gives only arch perspective
+- "neuro-check: [question]" - Claude gives only neuro perspective
+- "arch-check: [question]" - Claude gives only arch perspective
 
 These skip the full protocol but still require Claude to present reasoning before user decides.
 
@@ -287,21 +287,21 @@ See `src/cerebrum/subcortical/thalamus/ARCHITECTURE_GOALS.md` for full details.
 
 ```
 src/
-├── shared/
-│   ├── contracts_base_async.py  # Core types, TopicBus, RejectEvent
-│   ├── plane_base_async.py      # BasePlaneFacade (ingress/reject logic)
-│   └── topics_async.py          # Shared topic helpers
-├── spinal_cord/      # SpinalCord(BasePlaneFacade) + domain contracts
-├── brainstem/        # Brainstem(BasePlaneFacade) + domain contracts
-├── communication/    # Lane definitions, Envelope wrapper
-└── cerebrum/
-    ├── cortex/       # Decision layer with L4/L5/L6 feedback
-    └── subcortical/
-        ├── thalamus/     # ThalamicEnvelope, RouteDecision, GateState
-        │                 # See ARCHITECTURE_GOALS.md for nucleus-based target design
-        ├── hypothalamus/ # HomeostaticState, RegulationDecision
-        ├── basal_ganglia/# CandidateAction, SelectionDecision, BGPathway
-        └── limbic/       # EpisodicMemoryTrace, RetrievalResult
++-- shared/
+|   +-- contracts_base_async.py  # Core types, TopicBus, RejectEvent
+|   +-- plane_base_async.py      # BasePlaneFacade (ingress/reject logic)
+|   +-- topics_async.py          # Shared topic helpers
++-- spinal_cord/      # SpinalCord(BasePlaneFacade) + domain contracts
++-- brainstem/        # Brainstem(BasePlaneFacade) + domain contracts
++-- communication/    # Lane definitions, Envelope wrapper
++-- cerebrum/
+    +-- cortex/       # Decision layer with L4/L5/L6 feedback
+    +-- subcortical/
+        +-- thalamus/     # ThalamicEnvelope, RouteDecision, GateState
+        |                 # See ARCHITECTURE_GOALS.md for nucleus-based target design
+        +-- hypothalamus/ # HomeostaticState, RegulationDecision
+        +-- basal_ganglia/# CandidateAction, SelectionDecision, BGPathway
+        +-- limbic/       # EpisodicMemoryTrace, RetrievalResult
 ```
 
 ## Design Patterns
