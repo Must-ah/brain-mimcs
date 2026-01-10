@@ -113,7 +113,7 @@ Available papers:
 > 1. **Check KB status FIRST** - Look at `verified.md` for each file's status
 > 2. **If VERIFIED** - Use KB content directly, no web search needed
 > 3. **If NOT VERIFIED** - Use local papers (`./docs/knowledgebase/pappers/`) OR WebSearch to verify
-> 4. **If cannot verify → STOP and ASK** - Do NOT fall back to training knowledge silently
+> 4. **If cannot verify -> STOP and ASK** - Do NOT fall back to training knowledge silently
 
 **What "Verify Against Latest" Means:**
 ```
@@ -122,8 +122,8 @@ For each KB claim:
 2. Search for recent reviews/papers on the topic (use current year in search, e.g., "thalamus driver modulator review [current_year]")
 3. Check if the claim is still current scientific consensus
 4. Note any updates, refinements, or corrections from recent literature
-5. If foundational paper is still cited as authoritative in recent reviews → VERIFIED
-6. If recent research has updated understanding → UPDATE KB content
+5. If foundational paper is still cited as authoritative in recent reviews -> VERIFIED
+6. If recent research has updated understanding -> UPDATE KB content
 ```
 
 **Verification Process (Bootstrap):**
