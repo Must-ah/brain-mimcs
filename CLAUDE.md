@@ -8,6 +8,66 @@ brain-mimc is a brain-inspired software architecture modeling hierarchical, asyn
 
 **Core Principle:** "Raw never goes up" - sensor data is transformed into typed summaries at each level before passing to higher layers.
 
+## Core Principles (NON-NEGOTIABLE)
+
+### 1. Full Parallelism
+
+**Everything runs concurrently at every level of granularity.**
+
+| Level | Parallel Units |
+|-------|----------------|
+| System | Cerebrum, Cerebellum, Brainstem, Spinal Cord |
+| Region | Cortex, Thalamus, BG, Limbic, Hypothalamus |
+| Sub-component | Each nucleus, each cortex layer, each pathway |
+| Loop | A, B, C, D all run concurrently |
+| Scope | Each room/device/session processes independently |
+
+**No sequential pipelines. No blocking calls. No orchestrator.**
+
+### 2. Four Major Loops (ALL CONCURRENT)
+
+| Loop | Path | Purpose |
+|------|------|---------|
+| A | Cortex ↔ Thalamus ↔ Cortex | Routing + Attention |
+| B | Cortex → BG → Thalamus → Cortex | Action Selection |
+| C | Cortex → Cerebellum → Thalamus → Cortex | Calibration |
+| D | Limbic → Hypothalamus → Brainstem → Body | Regulation |
+
+### 3. Thalamus: Nucleus-Based Architecture
+
+**NOT just channels - requires nucleus-based addressing:**
+
+| Class | Nuclei | Role |
+|-------|--------|------|
+| First-order | LGN, MGN, VPL/VPM, VA/VL | Relay external world to primary cortex L4 |
+| Higher-order | Pulvinar, MD, LP/LD | Cortex-to-cortex routing (L5 → association cortex) |
+| Diffuse | CM, Pf, CL, PVT | Arousal, state (brainstem → widespread cortex) |
+| Gate | TRN | Attention gating (inhibits relay nuclei) |
+
+### 4. Cortex Layer Semantics
+
+| Layer | Function |
+|-------|----------|
+| L4 | Receives input from thalamus |
+| L5 | Sends higher-order drivers (to HO thalamic nuclei) |
+| L6 | Sends modulatory feedback (to thalamus) |
+
+### 5. Hardware Heterogeneity
+
+- Any part may run on different hardware
+- Layer-to-layer communication must be network-capable
+- Decide at lowest possible level - only escalate when lower cannot decide
+
+### 6. Drivers vs Modulators
+
+- **Drivers** carry content (what happened)
+- **Modulators** carry control (how to treat it)
+- Drivers never change gates. Modulators influence but don't dictate.
+
+### 7. Safe-by-Default
+
+Basal ganglia suppresses all actions unless explicitly released.
+
 ## Commands
 
 ```bash
@@ -149,3 +209,33 @@ For architectural decisions, both experts discuss WITH EACH OTHER before user de
 - All KB content assumed WRONG until verified against scientific papers
 
 Full specification: `~/.claude/plans/eager-beaming-barto.md`
+
+## Git Workflow
+
+**NEVER work directly on the main branch.**
+
+- Always create a feature branch before making changes
+- Branch naming: `feature/<description>` or `fix/<description>`
+- Only merge to main via pull request after review
+
+## Keeping This File Current
+
+**CRITICAL:** This file defines Claude's behavior on this project.
+
+When decisions are made or requirements change:
+1. Update CLAUDE.md IMMEDIATELY - do not defer
+2. Ensure PROJECT_GOALS.md and CLAUDE.md stay in sync
+3. If a decision contradicts this file, UPDATE this file
+4. Never let agreed requirements exist only in conversation or plan files
+
+**If you notice CLAUDE.md is missing agreed requirements:**
+- Stop current work
+- Update CLAUDE.md first
+- Then continue
+
+This prevents behavior drift across sessions.
+
+## Reference Documents
+
+- **Full Project Goals:** `docs/PROJECT_GOALS.md` (verification log, detailed specs)
+- **Plan File:** `~/.claude/plans/eager-beaming-barto.md` (expert agent specs)
