@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-brain-mimc is a brain-inspired software architecture modeling hierarchical, asynchronous communication inspired by neural anatomy. It uses a pub-sub model with multiple "planes" (lanes) similar to neural tracts for IoT/home automation.
+brain-mimc is a brain-inspired software framework modeling hierarchical, asynchronous communication inspired by neural anatomy. It uses a pub-sub model with multiple "planes" (lanes) similar to neural tracts.
 
 **Core Principle:** "Raw never goes up" - sensor data is transformed into typed summaries at each level before passing to higher layers.
 

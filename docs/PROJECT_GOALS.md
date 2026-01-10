@@ -4,9 +4,9 @@
 
 ## Vision
 
-Build a **complete brain-inspired distributed computing architecture** that models the full hierarchy of neural processing. The system implements all major brain regions as independent, concurrent components communicating via typed async pub-sub.
+Build a **complete brain-inspired distributed computing framework** that models the full hierarchy of neural processing. The system implements all major brain regions as independent, concurrent components communicating via typed async pub-sub.
 
-This is not a simulation of a brain - it is a **software architecture inspired by how brains organize computation**: parallel, hierarchical, attention-gated, and safe-by-default.
+This is not a simulation of a brain - it is a **software framework inspired by how brains organize computation**: parallel, hierarchical, attention-gated, and safe-by-default.
 
 ## Core Principles
 
