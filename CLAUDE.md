@@ -139,6 +139,37 @@ Build components in brain-faithful order (per V24):
 - Add verified items without expert validation
 - Name brain structures without neuro-expert
 
+### 12. Git Workflow (Feature Branches)
+
+**CRITICAL:** Claude must NEVER commit directly to main branch.
+
+**Pre-Commit Checklist (MANDATORY):**
+1. Verify on feature branch: `git branch --show-current` (must NOT be "main")
+2. If on main: `git checkout -b feature/<task-name>` FIRST
+3. Only then: commit changes
+
+**Branch Naming:**
+- `feature/<description>` - new functionality
+- `fix/<description>` - bug fixes
+
+**Workflow:**
+1. Create branch BEFORE any work begins
+2. All work happens on feature branch
+3. Commit and push to feature branch
+4. Merge to main only when task is COMPLETE
+5. Delete feature branch after merge
+
+**Claude must NEVER:**
+- Commit directly to main
+- Push to main without merging from feature branch
+- Skip branching for "quick" or "small" changes
+- Assume any change is too small for a branch
+
+**Why This Matters:**
+- Main branch stays stable
+- Incomplete work never pollutes main
+- Easy to abandon failed experiments
+
 ## Commands
 
 ```bash
@@ -304,43 +335,6 @@ For architectural decisions, both experts discuss WITH EACH OTHER before user de
 | REJECTED | Found inaccurate | DO NOT USE - needs correction |
 
 Full specification: `~/.claude/plans/eager-beaming-barto.md`
-
-## Git Workflow
-
-**NEVER work directly on the main branch. ALL work must be done on feature branches.**
-
-### Branch Rules
-
-1. **Create a branch BEFORE any work begins**
-   - Branch naming: `feature/<description>` or `fix/<description>`
-   - Example: `feature/thalamus-nucleus-routing` or `fix/trn-gating-bug`
-
-2. **All work happens on the feature branch**
-   - Code changes
-   - Documentation updates
-   - Commits
-
-3. **Only merge to main when the task is COMPLETE**
-   - All changes committed
-   - Task fully finished
-   - Merge and delete the feature branch
-
-### Workflow
-
-```
-1. git checkout -b feature/<task-name>    # Create branch
-2. ... do all work on this branch ...     # Work here
-3. git add . && git commit                # Commit changes
-4. git checkout main && git merge feature/<task-name>  # Merge when done
-5. git branch -d feature/<task-name>      # Delete branch
-```
-
-### Why This Matters
-
-- Main branch stays stable and deployable
-- Incomplete work never pollutes main
-- Easy to abandon failed experiments
-- Clear history of completed features
 
 ## Keeping This File Current
 
