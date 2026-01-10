@@ -234,11 +234,40 @@ Full specification: `~/.claude/plans/eager-beaming-barto.md`
 
 ## Git Workflow
 
-**NEVER work directly on the main branch.**
+**NEVER work directly on the main branch. ALL work must be done on feature branches.**
 
-- Always create a feature branch before making changes
-- Branch naming: `feature/<description>` or `fix/<description>`
-- Only merge to main via pull request after review
+### Branch Rules
+
+1. **Create a branch BEFORE any work begins**
+   - Branch naming: `feature/<description>` or `fix/<description>`
+   - Example: `feature/thalamus-nucleus-routing` or `fix/trn-gating-bug`
+
+2. **All work happens on the feature branch**
+   - Code changes
+   - Documentation updates
+   - Commits
+
+3. **Only merge to main when the task is COMPLETE**
+   - All changes committed
+   - Task fully finished
+   - Merge and delete the feature branch
+
+### Workflow
+
+```
+1. git checkout -b feature/<task-name>    # Create branch
+2. ... do all work on this branch ...     # Work here
+3. git add . && git commit                # Commit changes
+4. git checkout main && git merge feature/<task-name>  # Merge when done
+5. git branch -d feature/<task-name>      # Delete branch
+```
+
+### Why This Matters
+
+- Main branch stays stable and deployable
+- Incomplete work never pollutes main
+- Easy to abandon failed experiments
+- Clear history of completed features
 
 ## Keeping This File Current
 
