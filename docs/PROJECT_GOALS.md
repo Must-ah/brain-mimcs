@@ -146,30 +146,30 @@ The thalamus requires nucleus-based addressing (not just channels) to support:
 3. BG/Cerebellar integration needs nucleus addressing (GPi -> VA/VL)
 4. Nucleus classes behave differently
 
-## First Requirements
+## Development Phases (Brain-Faithful)
 
-### Phase 1: Contracts & Interfaces
+> Per V23: Brain never has "contracts only" - always concurrent operation. Integration is continuous, not a final phase.
 
-Define all input/output types for every component. This enables parallel implementation.
+### Phase 1: Contracts + Minimal Concurrent Stubs
 
-### Phase 2: Parallel Implementation
+Define all input/output types AND create minimal working stubs for every component. All components exist from day one.
 
-Each component built independently with mocked inputs/outputs:
+### Phase 2: Concurrent Elaboration
 
-| Component | Status | Priority |
-|-----------|--------|----------|
-| Thalamus (nucleus-based) | Skeleton exists | High |
-| Cortex (multi-layer) | Mock exists | High |
-| Basal Ganglia | Skeleton exists | High |
-| Limbic | Skeleton exists | Medium |
-| Hypothalamus | Skeleton exists | Medium |
-| Cerebellum | Not started | Medium |
-| Brainstem | Partial | Low (mostly done) |
-| Spinal Cord | Partial | Low (mostly done) |
+All components grow in capability together. Integration happens continuously as part of this phase.
 
-### Phase 3: Integration
+| Component | Status | Priority | Rationale |
+|-----------|--------|----------|-----------|
+| Spinal Cord | Partial | HIGH (Foundation) | I/O layer - everything depends on it |
+| Brainstem | Partial | HIGH (Foundation) | Vital/arousal systems |
+| Thalamus (nucleus-based) | Not started (restart) | HIGH (Gateway) | Cannot route without nucleus addressing |
+| Basal Ganglia | Skeleton exists | MEDIUM (Processing) | Action selection |
+| Cerebellum | Not started | MEDIUM (Processing) | Calibration |
+| Limbic | Skeleton exists | MEDIUM (Integration) | Memory, emotion |
+| Hypothalamus | Skeleton exists | MEDIUM (Integration) | Homeostasis |
+| Cortex (multi-layer) | Mock exists | LOWER (Depends on all) | Requires all above |
 
-Connect components via shared TopicBus. No code changes - just wiring.
+> Per V24: Brain builds foundation-up. Cortex depends on all lower structures.
 
 ## Key Invariants
 
@@ -215,6 +215,10 @@ Connect components via shared TopicBus. No code changes - just wiring.
 | V20 | Graceful degradation EXCEPT critical infrastructure | neuro-expert (KB) | Processing components degrade gracefully; critical infra (brainstem) = single point of failure |
 | V21 | Pub-sub over continuous streaming | neuro-expert (KB) | Brain converts continuous input to discrete events at sensor level (retina, cochlea, mechanoreceptors) |
 | V22 | "Raw never goes up" validated at sensor level | neuro-expert (KB) | Retina does edge detection, cochlea does frequency decomposition BEFORE transmitting |
+| V23 | Phase structure: Contracts+Stubs → Concurrent Elaboration (no separate integration phase) | neuro-expert | Brain always has concurrent operation |
+| V24 | Priority: Foundation-up (Brainstem/SpinalCord/Thalamus first, Cortex last) | neuro-expert | Cortex depends on all lower structures |
+| V25 | Thalamus: Nucleus-based from scratch (Option A) | neuro-expert | Nucleus classes fundamental to driver/modulator, TRN gating, transthalamic routes |
+| V26 | Communication: Discrete pub-sub (not continuous streaming) | neuro-expert | Brain uses discrete spikes; rate emerges from counting events |
 
 ### Items Requiring Discussion
 
@@ -222,8 +226,8 @@ Connect components via shared TopicBus. No code changes - just wiring.
 |---|------|--------|----------|-------|-----------|
 | 1 | "Not a simulation" framing | RESOLVED | I added without discussion | "Simulates brain organization with neuroscience-accurate granularity (nuclei, layers, pathways) but not biological processes (neurons, neurotransmitters)" | User confirmed this framing |
 | 2 | "No orchestrator" claim | RESOLVED | I inferred from parallelism | YES - Brain-faithful | See V18. Routes pre-wired, broadcast modulation sets state (not orchestration) |
-| 3 | Phase 1/2/3 structure | PENDING | I invented this | TBD | TBD |
-| 4 | Priority assignments | PENDING | I invented this | TBD | TBD |
+| 3 | Phase 1/2/3 structure | RESOLVED | I invented this | Modified: Contracts+Stubs → Concurrent Elaboration (no Phase 3) | See V23. neuro-expert: brain never has "contracts only" |
+| 4 | Priority assignments | RESOLVED | I invented this | CHANGED: Foundation-up (SpinalCord/Brainstem/Thalamus → BG/Cerebellum → Limbic/Hypothalamus → Cortex) | See V24. neuro-expert: brain builds foundation-up |
 | 5 | "Each component works standalone" | RESOLVED | I inferred this | YES - Brain-faithful | See V19. Spinal reflexes, CPGs work in isolation |
 | 6 | "Failures degrade gracefully" | RESOLVED | I inferred this | PARTIAL - Add exception | See V20. Critical infra (brainstem) = single point of failure |
 | 7 | Continuous streaming vs pub/sub | RESOLVED | User raised | Pub-sub MORE brain-faithful | See V21-V22. Sensors transform to discrete events |

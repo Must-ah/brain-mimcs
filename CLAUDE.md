@@ -87,6 +87,22 @@ This validates:
 - **Redundant pathways** exist for most functions
 - **No cascading failures** from peripheral component loss
 
+### 10. Development Order (Foundation-Up)
+
+Build components in brain-faithful order (per V24):
+
+| Priority | Components | Rationale |
+|----------|------------|-----------|
+| HIGH (Foundation) | Spinal Cord, Brainstem | I/O + vital/arousal - everything depends on them |
+| HIGH (Gateway) | Thalamus (nucleus-based) | Cannot route without nucleus addressing |
+| MEDIUM (Processing) | Basal Ganglia, Cerebellum | Action selection + calibration |
+| MEDIUM (Integration) | Limbic, Hypothalamus | Memory, emotion, homeostasis |
+| LOWER | Cortex | Depends on ALL above |
+
+**Phase Structure (per V23):**
+- Phase 1: Contracts + Minimal Concurrent Stubs (all components exist from day one)
+- Phase 2: Concurrent Elaboration (integration is continuous, not a final phase)
+
 ## Commands
 
 ```bash
