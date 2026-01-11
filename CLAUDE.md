@@ -414,15 +414,13 @@ This prevents behavior drift across sessions.
 
 ## Audit History
 
-Location: `docs/audits/`
+Location: `docs/audits/audit-merged-2026-01-11.md`
 
-| Date | Audit | Key Decisions |
-|------|-------|---------------|
-| 2026-01-11 | neuro-audit | Brain-faithfulness 7/10, TRN dual inhibition finding |
-| 2026-01-11 | arch-audit | Architecture 31% compliant, type duplication issues |
-| 2026-01-11 | combined-audit | Three-way synthesis, master action items |
-| 2026-01-11 | gatestate-discussion | Converged design: TRNSector, dual inhibition, TONIC/BURST |
-| 2026-01-11 | lanes-planes | Core lanes (A-G) verified brain-faithful |
+| Date | Score | Key Findings |
+|------|-------|--------------|
+| 2026-01-11 | 7/10 neuro, ~35% arch | Merged audit with verified findings |
+
+Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-planes).
 
 **Key decisions from 2026-01-11 audits:**
 - Deleted regressed feature branch (was channel-based, main has correct nucleus-based foundation) - DONE
