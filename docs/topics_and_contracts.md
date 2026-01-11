@@ -72,10 +72,10 @@ Meaning: device acknowledgement / completion summary.
 ### Brainstem topics (Broker C) — scope-addressed summaries
 
 **Relay bundles (typed summaries; upward-ready)**
-- `/bs/relay/{scope_level}/{scope}/channel/{channel}`
+- `/bs/relay/{scope_level}/{scope}/nucleus/{nucleus_id}`
 
-Meaning: brainstem converts many raw afferents into a small set of typed channels.
-Typical channels: `somatic | auditory | visual_orient | visceral | ...` (extendable).
+Meaning: brainstem converts many raw afferents into summaries addressed to specific thalamic nuclei.
+Typical nuclei: `lgn | mgn | vpl | vpm | pulvinar | md | ...` (see NucleusId enum).
 
 **Pattern triggers / reports (fast patterned responses)**
 - `/bs/pattern/{scope_level}/{scope}/{pattern_type}/trigger`
@@ -95,7 +95,7 @@ Meaning: fast “operating state” signals.
 ### Reliable topics (Broker R) — commands & learning-critical outcomes
 
 **Commands**
-- `/C/cmd/{scope_level}/{scope}/channel/{channel}/action/{action_id}`
+- `/C/cmd/{scope_level}/{scope}/nucleus/{nucleus_id}/action/{action_id}`
 
 Meaning: intentional actions (must be idempotent via `action_id`).
 
@@ -142,7 +142,7 @@ Optional fields:
 - **ReflexRule / ReflexTrigger / ReflexEvent**: reflex configuration and execution
 
 ### Brainstem contracts (examples)
-- **RelayBundle**: summarized, windowed features for a `channel`
+- **RelayBundle**: summarized, windowed features addressed to a `target_nucleus`
 - **PatternTrigger / PatternResponse**: urgent stereotyped response requests/results
 - **GlobalBroadcast**: “operating state” with expiry/half-life
 
@@ -226,6 +226,6 @@ If you run with `uv`:
 - **Plane**: an architectural level (Spinal/Brainstem/Thalamus/…)
 - **Afferent**: inbound sensory signal (device→system)
 - **Efferent**: outbound motor signal (system→device)
-- **RelayBundle**: summarized, typed “channel” signal (raw becomes relay)
+- **RelayBundle**: summarized, typed signal addressed to a thalamic nucleus (raw becomes relay)
 - **Tract boundary**: rule that raw does not propagate upward; it is transformed into summaries
 - **Reflection**: best-effort audit copy (must not block operations)

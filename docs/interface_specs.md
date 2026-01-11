@@ -247,9 +247,19 @@ class CortexLayer(str, Enum):
     L5 = "l5"  # higher-order driver to thalamus for transthalamic routing
 
 
-class GateMode(str, Enum):
-    MULTI = "multi"                 # allow multiple channels
-    WINNER_TAKE_ALL = "winner_take_all"
+class TRNSector(str, Enum):
+    """TRN is organized by sectors, not individual nuclei (Cho et al. 2025)"""
+    VISUAL = "visual"           # -> LGN
+    AUDITORY = "auditory"       # -> MGN
+    SOMATOSENSORY = "somatosensory"  # -> VPL, VPM
+    MOTOR = "motor"             # -> VL, VA
+    LIMBIC = "limbic"           # -> MD, AN, Reuniens
+
+
+class TRNMode(str, Enum):
+    """TRN operates in two modes (Sherman 2016)"""
+    TONIC = "tonic"    # Awake: relay mode (allows signals through)
+    BURST = "burst"    # Sleep/attention: block mode (gates signals)
 
 
 class ScopeLevel(str, Enum):
@@ -297,13 +307,21 @@ class RouteDecision:
 
 @dataclass(frozen=True)
 class GateState:
+    """
+    TRN gating state per sector (not per nucleus).
+    Uses dual inhibition model from Cho et al. 2025:
+    - GPe provides global gain control
+    - Intra-TRN lateral inhibition provides local focus
+    """
     scope: str
     scope_level: ScopeLevel
-    nucleus: NucleusId
-    inhibition: float  # 0..1
-    mode: Optional[GateMode]
+    sector: TRNSector              # Per-sector addressing (not per-nucleus)
+    gpe_inhibition: float          # 0..1: Global gain from BG (GPe pathway)
+    intra_trn_inhibition: float    # 0..1: Local focus from lateral inhibition
+    mode: TRNMode                  # TONIC (relay) or BURST (block)
     reason: Optional[str]
     timestamp_ms: int
+    # NO expires_at_ms - not brain-faithful
 
 
 # ---------- Interface protocols (contracts) ----------
@@ -330,7 +348,7 @@ class TRNGatePort(Protocol):
 
 
 class GateStore(Protocol):
-    def get_gate_state(self, scope: str, scope_level: ScopeLevel, nucleus: NucleusId) -> Optional[GateState]: ...
+    def get_gate_state(self, scope: str, scope_level: ScopeLevel, sector: TRNSector) -> Optional[GateState]: ...
     def put_gate_state(self, state: GateState) -> None: ...
 
 
@@ -382,15 +400,16 @@ class Thalamus:
         ...
 
     # --- gating (TRN-like inhibition control plane) ---
-    def get_gate_state(self, scope: str, scope_level: ScopeLevel, nucleus: NucleusId) -> Optional[GateState]:
+    def get_gate_state(self, scope: str, scope_level: ScopeLevel, sector: TRNSector) -> Optional[GateState]:
         ...
 
     def set_inhibition(
         self,
         scope: str,
         scope_level: ScopeLevel,
-        nucleus: NucleusId,
-        inhibition: float,
+        sector: TRNSector,
+        gpe_inhibition: float,
+        intra_trn_inhibition: float,
         timestamp_ms: int,
         reason: Optional[str] = None,
     ) -> GateState:
@@ -400,7 +419,7 @@ class Thalamus:
         self,
         scope: str,
         scope_level: ScopeLevel,
-        nucleus: NucleusId,
+        sector: TRNSector,
         timestamp_ms: int,
         reason: Optional[str] = None,
     ) -> GateState:
@@ -410,7 +429,7 @@ class Thalamus:
         self,
         scope: str,
         scope_level: ScopeLevel,
-        nucleus: NucleusId,
+        sector: TRNSector,
         timestamp_ms: int,
         reason: Optional[str] = None,
     ) -> GateState:
@@ -421,9 +440,9 @@ class Thalamus:
         scope: str,
         scope_level: ScopeLevel,
         timestamp_ms: int,
-        allow: Sequence[Tuple[NucleusId, float]],
-        suppress: Optional[Sequence[Tuple[NucleusId, float]]] = None,
-        mode: GateMode = GateMode.MULTI,
+        allow: Sequence[Tuple[TRNSector, float, float]],  # (sector, gpe_inh, intra_trn_inh)
+        suppress: Optional[Sequence[Tuple[TRNSector, float, float]]] = None,
+        mode: TRNMode = TRNMode.TONIC,
         reason: Optional[str] = None,
     ) -> Sequence[GateState]:
         ...
