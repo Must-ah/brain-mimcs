@@ -293,14 +293,6 @@ External → First-order → Cortex L4
 
 ---
 
-## Commands
-
-```bash
-# Run demos (Python 3.11+ required)
-python main.py --demo mock-cortex    # Run mock cortex demo
-python main.py --demo comms-router   # Run communications router demo
-```
-
 ## Architecture
 
 ### Data Flow Hierarchy
@@ -328,8 +320,6 @@ Subcortical modules:
 
 ### Major Loops (Target Architecture)
 
-See `src/cerebrum/subcortical/thalamus/ARCHITECTURE_GOALS.md` for full details.
-
 - **Loop A**: Cortex - Thalamus - Cortex (routing + attention coordination)
 - **Loop B**: Cortex - Basal Ganglia - Thalamus - Cortex (action selection)
 - **Loop C**: Cortex - Cerebellum - Thalamus - Cortex (timing/calibration)
@@ -347,43 +337,6 @@ See `src/cerebrum/subcortical/thalamus/ARCHITECTURE_GOALS.md` for full details.
 | E (ERROR/OUTCOME) | Learning signals | SpinalCord/Limbic to Cortex/BG |
 | G (GATE) | TRN inhibition state | Distributed control-plane |
 | X (REFLECTION) | Audit/observability | Non-blocking copies |
-
-### Key Contracts (`src/shared/`)
-
-**contracts_base_async.py** - Core types:
-- `ScopeLevel`: DEVICE, ROOM, HOUSE, USER_SESSION
-- `Plane`: SPINAL, BRAINSTEM, THALAMUS, CORTEX, REFLECT
-- `MessageType`: AFFERENT_SIGNAL, EFFERENT_COMMAND, RELAY_BUNDLE, etc.
-- `TopicBus` Protocol: async publish/subscribe interface
-- `InMemoryTopicBus`: reference implementation for testing
-- `RejectEvent`: standard rejection message contract
-
-**plane_base_async.py** - Base plane facade:
-- `BasePlaneFacade`: common ingress validation and reject logic
-  - Subclasses define: `ALLOWED_INBOUND`, `ORIGIN_PLANE`, `REJECT_HINT`
-  - Override `dispatch(topic, msg)` for domain-specific handling
-  - Base handles: type validation, RejectEvent emission to reflect bus
-
-### Source Layout
-
-```
-src/
-+-- shared/
-|   +-- contracts_base_async.py  # Core types, TopicBus, RejectEvent
-|   +-- plane_base_async.py      # BasePlaneFacade (ingress/reject logic)
-|   +-- topics_async.py          # Shared topic helpers
-+-- spinal_cord/      # SpinalCord(BasePlaneFacade) + domain contracts
-+-- brainstem/        # Brainstem(BasePlaneFacade) + domain contracts
-+-- communication/    # Lane definitions, Envelope wrapper
-+-- cerebrum/
-    +-- cortex/       # Decision layer with L4/L5/L6 feedback
-    +-- subcortical/
-        +-- thalamus/     # ThalamicEnvelope, RouteDecision, GateState
-        |                 # See ARCHITECTURE_GOALS.md for nucleus-based target design
-        +-- hypothalamus/ # HomeostaticState, RegulationDecision
-        +-- basal_ganglia/# CandidateAction, SelectionDecision, BGPathway
-        +-- limbic/       # EpisodicMemoryTrace, RetrievalResult
-```
 
 ## Design Patterns
 
@@ -482,14 +435,18 @@ Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-pla
 - Add Loop E (Papez/Memory circuit) - DONE
 - Delete channel files (not brain-faithful) - DONE
 
-## Current Status (2026-01-11 Checkpoint)
+## Current Status (Fresh Start - 2026-01-11)
 
-### Completed
-- [x] Loop Zero demo (3 processes, MQTT, concurrent proof-of-concept)
-- [x] 3 KB updates (TRN heterogeneity, L5→TRN pathway, Core/Matrix note)
-- [x] Thalamus architecture document (866 lines)
-- [x] 10 thalamus reference documents (~8K lines)
-- [x] Core Principles 10-12 (Dual-mode, Emergent Integration, FO/HO Flow)
+**All code removed.** Starting fresh with design-first approach.
+
+Previous code preserved at tag: `v0.1-pre-fresh-start`
+
+### What Exists
+- Complete documentation (architecture, KB, reference docs)
+- 12 Core Principles defined
+- Thalamus architecture document (866 lines)
+- 11 thalamus reference documents (~9K lines)
+- Expert agents and skills configured
 
 ### Design Insights Documented
 1. NO central controller - integration EMERGES from architecture
