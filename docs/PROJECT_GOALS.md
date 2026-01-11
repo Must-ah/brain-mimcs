@@ -90,7 +90,7 @@ All communication via typed, versioned contracts. Components can run on differen
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### The Four Major Loops (All Run Concurrently)
+### The Five Major Loops (All Run Concurrently)
 
 **Loop A: Cortex <-> Thalamus <-> Cortex** (Routing + Attention)
 - Thalamus relays sensory/association signals to cortex
@@ -115,6 +115,13 @@ All communication via typed, versioned contracts. Components can run on differen
 - Hypothalamus sets autonomic + endocrine outputs
 - Brainstem implements via spinal cord
 - Body state changes
+
+**Loop E: Hippocampus -> Mammillary Bodies -> Anterior Thalamus -> Cingulate -> Hippocampus** (Memory/Papez Circuit)
+- Hippocampus encodes new declarative memories
+- Mammillary bodies relay to anterior thalamus
+- Anterior thalamus projects to cingulate cortex
+- Cingulate provides emotional/contextual integration
+- Essential for memory consolidation (damage causes amnesia)
 
 ### Cross-Links
 
