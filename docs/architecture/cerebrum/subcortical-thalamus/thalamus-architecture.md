@@ -778,20 +778,89 @@ class BrainArchitecture:
 
 ---
 
+## Implementation Patterns (from thalamus_abstraction_filter.md)
+
+### What Matters for Software
+
+| Pattern | Description | Use Case |
+|---------|-------------|----------|
+| **Parallel Channels** | Same input → multiple streams (M/P/K) | Different processing speeds/depths |
+| **Subdivisions** | Higher-order modules have sub-components | Different I/O per subdivision |
+| **TRN Synchronization** | Sector-level gating via gap junctions | Entire sector gates together |
+
+### What to Skip
+
+| Skip | Reason |
+|------|--------|
+| Triadic synapses | Too low-level |
+| Sleep spindles | Unless modeling sleep/wake |
+| Core/Matrix | Use driver/modulator instead |
+| Interneuron details | Abstract to "pre-filter" |
+
+### Architecture Summary
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    THALAMIC ARCHITECTURE                        │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    RELAY MODULE                          │   │
+│  │                                                          │   │
+│  │  INPUT → [PRE-FILTER] → [PARALLEL CHANNELS] → OUTPUT    │   │
+│  │              │               │                          │   │
+│  │         Interneuron      M / P / K                       │   │
+│  │         abstraction      streams                         │   │
+│  │                                                          │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                         TRN                              │   │
+│  │                                                          │   │
+│  │  [SECTOR 1]═══[SECTOR 2]═══[SECTOR 3]                   │   │
+│  │       │            │            │                        │   │
+│  │  (synchronized via gap junctions)                        │   │
+│  │  Gating happens at SECTOR level, not neuron level        │   │
+│  │                                                          │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              HIGHER-ORDER RELAYS                         │   │
+│  │                                                          │   │
+│  │  PULVINAR:  [PuI] [PuL] [PuM] [PuA]                     │   │
+│  │              │     │     │     │                         │   │
+│  │           Different I/O per subdivision                  │   │
+│  │                                                          │   │
+│  │  MD:        [MDmc] [MDpc] [MDdc]                         │   │
+│  │              │      │      │                             │   │
+│  │           emotion  exec   eye mvmt                       │   │
+│  │                                                          │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## References
 
-- `docs/knowledgebase/subcortical-thalamus/` - Source reference documents
+- `docs/knowledgebase/subcortical-thalamus/` - Source reference documents (11 files)
+- `docs/knowledgebase/subcortical-thalamus/thalamus_abstraction_filter.md` - Implementation priority
 - `docs/knowledgebase/brain/cerebrum-Subcortical-Structures-Thalamus.md` - Verified KB
 - `docs/knowledgebase/brain/sources.md` - Citations (P31: Hádinger 2022)
 - `src/cerebrum/subcortical/thalamus/` - Current implementation (stubs)
 
 ---
 
-## Next Steps
+## Implementation Priority
 
-1. **Define NucleusId enum** with all ~60 nuclei organized by class
-2. **Implement TRNSector** with proper sector organization
-3. **Design multi-input integration** for VL, MD, Pulvinar
-4. **Implement cross-loop EventBus**
-5. **Add NeuromodulatorSystem** for global state
-6. **Wire up the 6 major loops**
+| Priority | Component | Pattern | Status |
+|----------|-----------|---------|--------|
+| 1 | Base `RelayModule` class | Foundation for all relays | TODO |
+| 2 | `TRNSector` (synchronized) | Sector-level gating via gap junctions | TODO |
+| 3 | `ParallelChannelRelay` | M/P/K streams (same input → different processing) | TODO |
+| 4 | `Pulvinar` subdivisions | PuI/PuL/PuM/PuA with different I/O | TODO |
+| 5 | `MD` subdivisions | MDmc/MDpc/MDdc (emotion/exec/eye) | TODO |
+| 6 | `PreFilter` (optional) | Interneuron abstraction | TODO |
+| 7 | `TopographicRelay` (optional) | Only if spatial data needed | TODO |
+
+See `thalamus_abstraction_filter.md` for complete Python code for each pattern.

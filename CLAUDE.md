@@ -509,12 +509,22 @@ Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-pla
 5. First-order ≠ Higher-order direct - Cortex is the bridge
 6. 10 things still missing (see What-Missing.md)
 
-### Next Implementation Steps
-1. Define `NucleusId` enum with all ~60 nuclei
-2. Implement `TRNSector` with proper sector organization
-3. Design multi-input integration for VL, MD, Pulvinar
-4. Implement cross-loop `EventBus`
-5. Add `NeuromodulatorSystem` for global state
+### Next Implementation Steps (Updated per thalamus_abstraction_filter.md)
+
+| Priority | Component | Pattern | Status |
+|----------|-----------|---------|--------|
+| 1 | Base `RelayModule` class | Foundation for all relays | TODO |
+| 2 | `TRNSector` (synchronized) | Sector-level gating via gap junctions | TODO |
+| 3 | `ParallelChannelRelay` | M/P/K streams (same input → different processing) | TODO |
+| 4 | `Pulvinar` subdivisions | PuI/PuL/PuM/PuA with different I/O | TODO |
+| 5 | `MD` subdivisions | MDmc/MDpc/MDdc (emotion/exec/eye) | TODO |
+| 6 | `PreFilter` (optional) | Interneuron abstraction | TODO |
+| 7 | `TopographicRelay` (optional) | Only if spatial data needed | TODO |
+
+**Key patterns from abstraction filter:**
+- Parallel channels: Same relay, multiple processing streams
+- Subdivisions: Higher-order modules have sub-components with different I/O
+- TRN synchronization: Gating is per-sector, not per-relay
 
 **HIGH Priority (from audits):**
 - GateState refactor: TRNSector enum, dual inhibition, TONIC/BURST modes
@@ -540,7 +550,8 @@ Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-pla
 
 - **Full Project Goals:** `docs/PROJECT_GOALS.md` (verification log, detailed specs)
 - **Thalamus Architecture:** `docs/architecture/cerebrum/subcortical-thalamus/thalamus-architecture.md` (728 lines - comprehensive design)
-- **Thalamus Reference Docs:** `docs/knowledgebase/subcortical-thalamus/` (10 files, ~8K lines)
+- **Thalamus Reference Docs:** `docs/knowledgebase/subcortical-thalamus/` (11 files, ~9K lines)
+  - `thalamus_abstraction_filter.md` - **Implementation priority** (what matters for software)
   - `one-system.md` - Emergent integration, no central controller
   - `mutliple-order-flow.md` - First-order → Cortex → Higher-order flow
   - `What-Missing.md` - 10 things still to address
