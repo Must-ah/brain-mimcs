@@ -499,37 +499,35 @@ Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-pla
 5. First-order ≠ Higher-order direct - Cortex is the bridge
 6. 10 things still missing (see What-Missing.md)
 
-### Next Implementation Steps (Updated per thalamus_abstraction_filter.md)
+### Implementation Steps (DEFERRED)
+
+> Status: All items deferred indefinitely. Will revisit when ready.
 
 | Priority | Component | Pattern | Status |
 |----------|-----------|---------|--------|
-| 1 | Base `RelayModule` class | Foundation for all relays | TODO |
-| 2 | `TRNSector` (synchronized) | Sector-level gating via gap junctions | TODO |
-| 3 | `ParallelChannelRelay` | M/P/K streams (same input → different processing) | TODO |
-| 4 | `Pulvinar` subdivisions | PuI/PuL/PuM/PuA with different I/O | TODO |
-| 5 | `MD` subdivisions | MDmc/MDpc/MDdc (emotion/exec/eye) | TODO |
-| 6 | `PreFilter` (optional) | Interneuron abstraction | TODO |
-| 7 | `TopographicRelay` (optional) | Only if spatial data needed | TODO |
+| 1 | Base `RelayModule` class | Foundation for all relays | DEFERRED |
+| 2 | `TRNSector` (synchronized) | Sector-level gating via gap junctions | DEFERRED |
+| 3 | `ParallelChannelRelay` | M/P/K streams (same input → different processing) | DEFERRED |
+| 4 | `Pulvinar` subdivisions | PuI/PuL/PuM/PuA with different I/O | DEFERRED |
+| 5 | `MD` subdivisions | MDmc/MDpc/MDdc (emotion/exec/eye) | DEFERRED |
+| 6 | `PreFilter` (optional) | Interneuron abstraction | DEFERRED |
+| 7 | `TopographicRelay` (optional) | Only if spatial data needed | DEFERRED |
 
 **Key patterns from abstraction filter:**
 - Parallel channels: Same relay, multiple processing streams
 - Subdivisions: Higher-order modules have sub-components with different I/O
 - TRN synchronization: Gating is per-sector, not per-relay
 
-**HIGH Priority (from audits):**
+**From audits (DEFERRED):**
 - GateState refactor: TRNSector enum, dual inhibition, TONIC/BURST modes
 - Fix type duplication (ScopeLevel in 6 files, GateState in 3 files, InMemoryTopicBus in 3 files)
 - Fix type imports in mock_cortex_async.py and communication/contracts.py
 - Change Brainstem RelayBundle: `channel: str` → `target_nucleus: NucleusId`
 - Add BasePlaneFacade to BG, Limbic, Hypothalamus
 - Extend Plane enum (BASAL_GANGLIA, LIMBIC, HYPOTHALAMUS, CEREBELLUM)
-
-**MEDIUM Priority (from audits):**
 - Add NucleusId entries (AN, REUNIENS)
 - Create cerebellum skeleton for Loop C
 - Implement routing logic (Thalamus dispatch empty, TRN gating empty)
-
-**LOW Priority (from audits):**
 - Add Meta fields to subcortical messages
 - Add spinal cord laminae enum
 - Add reticular formation contracts
