@@ -451,3 +451,8 @@ Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-pla
 
 - **Full Project Goals:** `docs/PROJECT_GOALS.md` (verification log, detailed specs)
 - **Audit Files:** `docs/audits/` (neuro-expert and arch-expert findings)
+- **Interface Specs:** `docs/interface_specs.md` (nucleus-based contracts, converged GateState)
+- **Topics & Contracts:** `docs/topics_and_contracts.md` (MQTT topic structure)
+- **Lane Profiles:** `docs/architecture/lane_profiles.md` (message envelope policies)
+- **Broker Policy:** `docs/broker_boundary_bridge_policy.md` (tract boundary rules)
+- **Mosquitto Guide:** `docs/mosquitto_brain_like_communication.md` (infrastructure)
