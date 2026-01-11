@@ -245,8 +245,6 @@ All components grow in capability together. Integration happens continuously as 
 
 ## Expert Agent Specification
 
-> Full specification is maintained in the plan file: `~/.claude/plans/eager-beaming-barto.md`
-
 ### Overview
 
 | Aspect | Decision | Rationale |

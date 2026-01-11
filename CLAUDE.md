@@ -426,13 +426,27 @@ Location: `docs/audits/`
 **Key decisions from 2026-01-11 audits:**
 - Deleted regressed feature branch (was channel-based, main has correct nucleus-based foundation) - DONE
 - Add Loop E (Papez/Memory circuit) - DONE
-- GateState needs: TRNSector enum, dual inhibition, TONIC/BURST modes
 - Delete channel files (not brain-faithful) - DONE
-- Fix type duplication (ScopeLevel in 6 files, GateState in 3 files)
+
+**HIGH Priority (from audits):**
+- GateState refactor: TRNSector enum, dual inhibition, TONIC/BURST modes
+- Fix type duplication (ScopeLevel in 6 files, GateState in 3 files, InMemoryTopicBus in 3 files)
+- Fix type imports in mock_cortex_async.py and communication/contracts.py
+- Change Brainstem RelayBundle: `channel: str` → `target_nucleus: NucleusId`
 - Add BasePlaneFacade to BG, Limbic, Hypothalamus
 - Extend Plane enum (BASAL_GANGLIA, LIMBIC, HYPOTHALAMUS, CEREBELLUM)
+
+**MEDIUM Priority (from audits):**
 - Add NucleusId entries (AN, REUNIENS)
 - Create cerebellum skeleton for Loop C
+- Implement routing logic (Thalamus dispatch empty, TRN gating empty)
+
+**LOW Priority (from audits):**
+- Add Meta fields to subcortical messages
+- Add spinal cord laminae enum
+- Add reticular formation contracts
+- Add neuromodulator explicit contracts
+- Document canonical type locations in CLAUDE.md
 
 ## Reference Documents
 
