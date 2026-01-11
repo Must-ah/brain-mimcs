@@ -418,10 +418,11 @@ Location: `docs/audits/`
 
 | Date | Audit | Key Decisions |
 |------|-------|---------------|
-| 2026-01-11 | branch-decision | Delete feature/thalamus-nucleus-refactor (regressed to channels) |
+| 2026-01-11 | neuro-audit | Brain-faithfulness 7/10, TRN dual inhibition finding |
+| 2026-01-11 | arch-audit | Architecture 31% compliant, type duplication issues |
+| 2026-01-11 | combined-audit | Three-way synthesis, master action items |
 | 2026-01-11 | gatestate-discussion | Converged design: TRNSector, dual inhibition, TONIC/BURST |
 | 2026-01-11 | lanes-planes | Core lanes (A-G) verified brain-faithful |
-| 2026-01-11 | combined-audit | Brain-faithfulness 7/10, architecture 31% compliant |
 
 **Key decisions from 2026-01-11 audits:**
 - Deleted regressed feature branch (was channel-based, main has correct nucleus-based foundation) - DONE
