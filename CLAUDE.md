@@ -246,9 +246,9 @@ Thalamic relay operates in TWO modes with DIFFERENT communication patterns. This
 
 **Source:** Cho et al. 2025 (TRN dual inhibitory network), Sherman 2016 (burst vs tonic relay modes)
 
-### 11. Emergent Integration (No Central Controller)
+### 11. Critically Decentralized with Emergent Decision-Making
 
-**The brain has NO central controller.** Integration EMERGES from architecture.
+**A critically decentralized system where outcomes EMERGE from the interaction of diverse regions rather than a single top-down command.** No central controller exists. The architecture IS the coordination.
 
 | Mechanism | How It Works |
 |-----------|--------------|

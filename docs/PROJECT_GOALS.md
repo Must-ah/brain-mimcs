@@ -58,6 +58,10 @@ All communication must be non-blocking. Different communication channels exist b
 
 Decisions made at lowest region/hardware possible. Only escalate to higher areas when lower cannot decide.
 
+### 7. Critically Decentralized with Emergent Decision-Making
+
+A critically decentralized system where outcomes **emerge** from the interaction of diverse regions rather than a single top-down command. No central controller exists. The architecture IS the coordination.
+
 ## System Architecture
 
 - **Cerebrum**
@@ -145,7 +149,7 @@ Decisions made at lowest region/hardware possible. Only escalate to higher areas
 | V15 | Hardware heterogeneity is a GENERAL principle | Any part may run on different hardware |
 | V16 | Decide at lowest possible level | Only escalate when lower cannot decide |
 | V17 | Hardware mapping is TBD | Not yet decided |
-| V18 | No one decides - structure forces outcome | Intelligence emerges from dumb parts following local rules. No module knows the whole plan. No module coordinates others. The architecture IS the coordination. |
+| V18 | Critically decentralized - outcomes emerge | Outcomes emerge from interaction of diverse regions, not top-down command. No module knows the whole plan. No module coordinates others. The architecture IS the coordination. |
 | V19 | Components can function standalone | Each structure mockable; works in isolation |
 
 > Detailed thalamus verification items (V27-V33) moved to `docs/architecture/cerebrum/subcortical-thalamus/thalamus-architecture.md`
