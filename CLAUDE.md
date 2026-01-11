@@ -236,6 +236,26 @@ Build components in brain-faithful order (per V24):
 - Phase 1: Contracts + Minimal Concurrent Stubs (all components exist from day one)
 - Phase 2: Concurrent Elaboration (integration is continuous, not a final phase)
 
+### 11. Dual-Mode Communication (TONIC vs BURST)
+
+Thalamic relay operates in TWO modes with DIFFERENT communication patterns. This is NOT optional - it's how the brain actually works.
+
+| Mode | When Active | TRN Behavior | Communication Pattern |
+|------|-------------|--------------|----------------------|
+| TONIC | Alert, sustained attention | Graded inhibition | Publish-on-change, rate-coded, near-continuous |
+| BURST | Sleep, drowsy, attention shifts | Oscillatory (7-14 Hz) | Rhythmic packets, discrete windows (~100ms on/off) |
+
+**Key distinctions:**
+- **TONIC mode**: High-fidelity relay. Messages flow based on sector gate level (0.0 to 1.0). Linear input-output.
+- **BURST mode**: Salience detection. Messages only pass during "open" phase of burst cycle. Non-linear, packet-based.
+
+**Implementation requirement:**
+- `TRNMode.TONIC` and `TRNMode.BURST` MUST behave differently
+- Thalamus relay logic must check operating mode and apply different patterns
+- Both modes use discrete messages, but temporal patterns differ
+
+**Source:** Cho et al. 2025 (TRN dual inhibitory network), Sherman 2016 (burst vs tonic relay modes)
+
 ---
 
 ## Commands

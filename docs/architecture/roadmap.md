@@ -205,8 +205,58 @@ python demos/loop_zero/loop_zero_trn.py
 
 ### Success Indicators
 
-- [ ] 3 separate PIDs visible in `ps aux | grep loop_zero`
-- [ ] Cortex receives messages from Thalamus
-- [ ] TRN can block messages (BURST mode)
-- [ ] No process waits for another (check timestamps in logs)
-- [ ] System keeps running if one process dies (degradation, not crash)
+- [x] 3 separate PIDs visible in `ps aux | grep loop_zero`
+- [x] 3 separate CPUs (verified: CPU 10, 3, 31)
+- [x] Messages flowing (L5 SENT, GATE published)
+- [x] Non-blocking (all processes log independently)
+- [ ] TRN can block messages (BURST mode) - not yet tested
+- [ ] System keeps running if one process dies - not yet tested
+
+---
+
+## Design Note: Dual-Mode Communication (TONIC vs BURST)
+
+**Date:** 2026-01-11
+**Source:** neuro-expert consultation, Cho et al. 2025, Sherman 2016
+
+### Critical Finding
+
+Thalamic relay operates in TWO modes with DIFFERENT communication patterns:
+
+| Mode | When Active | TRN Behavior | Communication Pattern |
+|------|-------------|--------------|----------------------|
+| TONIC | Alert, sustained attention | Graded inhibition | Publish-on-change, rate-coded, near-continuous |
+| BURST | Sleep, drowsy, attention shifts | Oscillatory (7-14 Hz) | Rhythmic packets, discrete windows (~100ms on/off) |
+
+### Why This Matters
+
+- Current Loop Zero has `TRNMode.TONIC | BURST` but treats them identically
+- Future implementation MUST make them behave differently
+- This is NOT optional - it's how the brain actually works
+
+### Implementation Pattern
+
+```python
+if operating_mode == TRNMode.TONIC:
+    # Graded, proportional relay
+    # Messages flow based on sector gate level (0.0 to 1.0)
+    # Publish-on-change with rate coding
+    # Linear input-output relationship
+
+elif operating_mode == TRNMode.BURST:
+    # Rhythmic gating
+    # Messages only pass during "open" phase of burst cycle
+    # Packet delivery with discrete windows (~100ms on/off)
+    # Non-linear, salience detection mode
+```
+
+### Scientific Basis
+
+| Brain Mechanism | Mode | Software Equivalent |
+|-----------------|------|---------------------|
+| T-type calcium channel bursts | BURST | Windowed message delivery |
+| Graded membrane potential | TONIC | Rate-coded message frequency |
+| TRN oscillatory inhibition | BURST | Periodic gate close/open |
+| TRN tonic inhibition | TONIC | Continuous gate level (0.0-1.0) |
+
+This finding is documented in CLAUDE.md Core Principle 11.

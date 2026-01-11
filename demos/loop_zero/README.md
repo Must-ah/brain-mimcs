@@ -167,3 +167,21 @@ Once this demo works, we know our architecture is sound for true concurrency. Th
 2. **Build out foundation** (SpinalCord, Brainstem dispatch)
 3. **Add more loops** (B with BG, C with Cerebellum, D with Hypothalamus, E with Hippocampus)
 4. **Scale test** (run on multiple machines)
+
+## Future Work: Dual-Mode Communication
+
+**Current limitation:** Loop Zero treats `TRNMode.TONIC` and `TRNMode.BURST` identically.
+
+**Required enhancement:** These modes MUST behave differently (see CLAUDE.md Core Principle 11):
+
+| Mode | Current Behavior | Required Behavior |
+|------|------------------|-------------------|
+| TONIC | Same as BURST | Graded relay, publish-on-change, rate-coded |
+| BURST | Binary block/pass | Rhythmic packets, ~100ms windows, 7-14 Hz oscillation |
+
+**Implementation notes:**
+- TONIC = high-fidelity relay (awake, sustained attention)
+- BURST = salience detection (sleep, drowsy, attention shifts)
+- Both use discrete messages, but temporal patterns differ
+
+**Source:** Cho et al. 2025, Sherman 2016
