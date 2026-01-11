@@ -427,7 +427,7 @@ Location: `docs/audits/`
 - Deleted regressed feature branch (was channel-based, main has correct nucleus-based foundation) - DONE
 - Add Loop E (Papez/Memory circuit) - DONE
 - GateState needs: TRNSector enum, dual inhibition, TONIC/BURST modes
-- Delete channel files (not brain-faithful)
+- Delete channel files (not brain-faithful) - DONE
 - Fix type duplication (ScopeLevel in 6 files, GateState in 3 files)
 - Add BasePlaneFacade to BG, Limbic, Hypothalamus
 - Extend Plane enum (BASAL_GANGLIA, LIMBIC, HYPOTHALAMUS, CEREBELLUM)
