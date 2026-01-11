@@ -497,7 +497,7 @@ Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-pla
 ### Completed
 - [x] Loop Zero demo (3 processes, MQTT, concurrent proof-of-concept)
 - [x] 3 KB updates (TRN heterogeneity, L5→TRN pathway, Core/Matrix note)
-- [x] Thalamus architecture document (728 lines)
+- [x] Thalamus architecture document (866 lines)
 - [x] 10 thalamus reference documents (~8K lines)
 - [x] Core Principles 11-13 added (Dual-mode, Emergent Integration, FO/HO Flow)
 
@@ -549,7 +549,7 @@ Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-pla
 ## Reference Documents
 
 - **Full Project Goals:** `docs/PROJECT_GOALS.md` (verification log, detailed specs)
-- **Thalamus Architecture:** `docs/architecture/cerebrum/subcortical-thalamus/thalamus-architecture.md` (728 lines - comprehensive design)
+- **Thalamus Architecture:** `docs/architecture/cerebrum/subcortical-thalamus/thalamus-architecture.md` (866 lines - comprehensive design)
 - **Thalamus Reference Docs:** `docs/knowledgebase/subcortical-thalamus/` (11 files, ~9K lines)
   - `thalamus_abstraction_filter.md` - **Implementation priority** (what matters for software)
   - `one-system.md` - Emergent integration, no central controller
