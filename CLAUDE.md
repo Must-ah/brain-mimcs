@@ -424,11 +424,15 @@ Location: `docs/audits/`
 | 2026-01-11 | combined-audit | Brain-faithfulness 7/10, architecture 31% compliant |
 
 **Key decisions from 2026-01-11 audits:**
-- Stay on main branch (nucleus-based foundation correct)
+- Deleted regressed feature branch (was channel-based, main has correct nucleus-based foundation) - DONE
 - Add Loop E (Papez/Memory circuit) - DONE
 - GateState needs: TRNSector enum, dual inhibition, TONIC/BURST modes
 - Delete channel files (not brain-faithful)
 - Fix type duplication (ScopeLevel in 6 files, GateState in 3 files)
+- Add BasePlaneFacade to BG, Limbic, Hypothalamus
+- Extend Plane enum (BASAL_GANGLIA, LIMBIC, HYPOTHALAMUS, CEREBELLUM)
+- Add NucleusId entries (AN, REUNIENS)
+- Create cerebellum skeleton for Loop C
 
 ## Reference Documents
 
