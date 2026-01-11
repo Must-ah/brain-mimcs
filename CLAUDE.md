@@ -49,7 +49,7 @@ git checkout -b feature/<task-name>
 
 You MUST follow this protocol when:
 - Designing new components or modules
-- Proposing changes to Core Principles (sections 1-10 below)
+- Proposing changes to Core Principles (sections 1-12 below)
 - Naming brain structures, pathways, or regions
 - Adding or modifying connections between components
 - Adding to Verified items (V-series in PROJECT_GOALS.md)
@@ -136,9 +136,13 @@ These skip the full protocol but still require Claude to present reasoning befor
 
 ## Project Overview
 
-brain-mimc is a brain-inspired software framework modeling hierarchical, asynchronous communication inspired by neural anatomy. It uses a pub-sub model with multiple "planes" (lanes) similar to neural tracts.
+brain-mimc is a brain-inspired software framework modeling hierarchical, asynchronous communication inspired by neural anatomy. The system implements all major brain regions as independent, concurrent components communicating non-blocking.
 
-**Core Principle:** "Raw never goes up" - sensor data is transformed into typed summaries at each level before passing to higher layers.
+The brain is divided into:
+- **Cerebrum** (with Cortex, Thalamus, Basal Ganglia, Limbic System, Hypothalamus)
+- **Cerebellum**
+- **Brainstem**
+- **Spinal Cord**
 
 ## Core Principles (NON-NEGOTIABLE)
 
@@ -151,12 +155,14 @@ brain-mimc is a brain-inspired software framework modeling hierarchical, asynchr
 | System | Cerebrum, Cerebellum, Brainstem, Spinal Cord |
 | Region | Cortex, Thalamus, BG, Limbic, Hypothalamus |
 | Sub-component | Each nucleus, each cortex layer, each pathway |
-| Loop | A, B, C, D, E all run concurrently |
+| Loop | Multiple loops run concurrently (A-E are examples, more exist) |
 | Scope | Each room/device/session processes independently |
 
-**No sequential pipelines. No blocking calls. No orchestrator.**
+**No sequential pipelines. No blocking calls. No orchestrator (like the brain).**
 
-### 2. Five Major Loops (ALL CONCURRENT)
+Different structures and regions may run on different hardware.
+
+### 2. Major Loops (Examples - More Exist)
 
 | Loop | Path | Purpose |
 |------|------|---------|
@@ -165,6 +171,8 @@ brain-mimc is a brain-inspired software framework modeling hierarchical, asynchr
 | C | Cortex - Cerebellum - Thalamus - Cortex | Calibration |
 | D | Limbic - Hypothalamus - Brainstem - Body | Regulation |
 | E | Hippocampus - Mammillary - Ant. Thalamus - Cingulate - Hippocampus | Memory (Papez) |
+
+Loops also exist within subcortical parts and between regions.
 
 ### 3. Thalamus: Nucleus-Based Architecture
 
@@ -191,27 +199,25 @@ brain-mimc is a brain-inspired software framework modeling hierarchical, asynchr
 - Layer-to-layer communication must be network-capable
 - Decide at lowest possible level - only escalate when lower cannot decide
 
-### 6. Drivers vs Modulators
+### 6. Message + Context
 
-- **Drivers** carry content (what happened)
-- **Modulators** carry control (how to treat it)
-- Drivers never change gates. Modulators influence but don't dictate.
+Information flows as **messages** (what happened) with corresponding **context** (how to adjust the system).
 
-### 7. Safe-by-Default
+- Messages carry content
+- Context guides processing
+- Messages don't change system state directly; context influences behavior
 
-Basal ganglia suppresses all actions unless explicitly released.
+### 7. Safety Mechanisms
 
-### 8. Communication Pattern (Brain-Faithful)
+The system uses brain-inspired safety mechanisms. Actions are suppressed by default unless explicitly released.
 
-The brain does NOT use continuous streaming. Transformation to discrete events happens at the sensor:
-- **Retina**: Edge detection, contrast, motion to RGC spikes (not raw pixels)
-- **Cochlea**: Frequency decomposition to spike patterns (not raw audio)
-- **Mechanoreceptors**: Adaptation (onset/offset only) to nerve spikes
+### 8. Non-Blocking Communication
 
-This validates:
-- Typed async pub-sub over continuous streaming
-- "Raw never goes up" at every level including sensors
-- Publish-on-change pattern (like receptor adaptation)
+All communication must be non-blocking. Different communication channels exist based on system needs:
+- Regular channels for normal operation
+- Reflect-path (emergency channel) for critical communication
+
+Communication method is flexible (async, non-blocking) - not locked to any specific technology.
 
 ### 9. Failure Modes (Brain-Faithful)
 
@@ -220,23 +226,7 @@ This validates:
 - **Redundant pathways** exist for most functions
 - **No cascading failures** from peripheral component loss
 
-### 10. Development Order (Foundation-Up)
-
-Build components in brain-faithful order (per V24):
-
-| Priority | Components | Rationale |
-|----------|------------|-----------|
-| HIGH (Foundation) | Spinal Cord, Brainstem | I/O + vital/arousal - everything depends on them |
-| HIGH (Gateway) | Thalamus (nucleus-based) | Cannot route without nucleus addressing |
-| MEDIUM (Processing) | Basal Ganglia, Cerebellum | Action selection + calibration |
-| MEDIUM (Integration) | Limbic, Hypothalamus | Memory, emotion, homeostasis |
-| LOWER | Cortex | Depends on ALL above |
-
-**Phase Structure (per V23):**
-- Phase 1: Contracts + Minimal Concurrent Stubs (all components exist from day one)
-- Phase 2: Concurrent Elaboration (integration is continuous, not a final phase)
-
-### 11. Dual-Mode Communication (TONIC vs BURST)
+### 10. Dual-Mode Communication (TONIC vs BURST)
 
 Thalamic relay operates in TWO modes with DIFFERENT communication patterns. This is NOT optional - it's how the brain actually works.
 
@@ -256,7 +246,7 @@ Thalamic relay operates in TWO modes with DIFFERENT communication patterns. This
 
 **Source:** Cho et al. 2025 (TRN dual inhibitory network), Sherman 2016 (burst vs tonic relay modes)
 
-### 12. Emergent Integration (No Central Controller)
+### 11. Emergent Integration (No Central Controller)
 
 **The brain has NO central controller.** Integration EMERGES from architecture.
 
@@ -278,7 +268,7 @@ Thalamic relay operates in TWO modes with DIFFERENT communication patterns. This
 
 **Source:** one-system.md (reference doc)
 
-### 13. First-Order / Higher-Order Flow
+### 12. First-Order / Higher-Order Flow
 
 **First-order and higher-order nuclei do NOT connect directly. Cortex is the BRIDGE.**
 
@@ -499,7 +489,7 @@ Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-pla
 - [x] 3 KB updates (TRN heterogeneity, L5→TRN pathway, Core/Matrix note)
 - [x] Thalamus architecture document (866 lines)
 - [x] 10 thalamus reference documents (~8K lines)
-- [x] Core Principles 11-13 added (Dual-mode, Emergent Integration, FO/HO Flow)
+- [x] Core Principles 10-12 (Dual-mode, Emergent Integration, FO/HO Flow)
 
 ### Design Insights Documented
 1. NO central controller - integration EMERGES from architecture
