@@ -49,6 +49,7 @@
 | P21 | Calabresi P, et al. (2014). Direct and indirect pathways of basal ganglia: a critical reappraisal. Nat Neurosci | Basal ganglia pathways | Critical review of classic model | [PubMed](https://pubmed.ncbi.nlm.nih.gov/25065439/) |
 | P22 | (2023). Multiple dynamic interactions from basal ganglia direct and indirect pathways mediate action selection. eLife | Basal ganglia | Triple-control model (center-surround-context) | [PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC10522336/) |
 | P23 | (2025). A Dual Inhibitory Network in the Thalamic Reticular Nucleus Delineated by Pallidal and Intra-Reticular Inhibition. bioRxiv | TRN | GPe->TRN inhibition, SOM->PV intra-TRN inhibition | [bioRxiv](https://www.biorxiv.org/content/10.1101/2025.10.05.680571v1.full) |
+| P31 | Hádinger N, et al. (2022). Region-selective control of the thalamic reticular nucleus via cortical layer 5 pyramidal cells. Nature Neuroscience 26:116-130 | TRN, Corticothalamic | Frontal L5→TRN direct pathway (unique to frontal cortex) | [Nature](https://www.nature.com/articles/s41593-022-01217-z) |
 | P24 | (2025). Biophysical modeling of thalamic reticular nucleus subpopulations and their differential contribution to spindle dynamics. | TRN | Ecel1+ and Spp1+ populations, burst firing heterogeneity | [PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC12454877/) |
 | P25 | (2025). Cerebellar circuit computations for predictive motor control. Nat Rev Neurosci | Cerebellum | Associative feedforward control, multiple parallel modules | [Nature](https://www.nature.com/articles/s41583-025-00936-z) |
 | P26 | (2025). The cerebellar connectome. Behav Brain Res | Cerebellum | Connectivity, cognitive functions, large-scale networks | [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0166432825000439) |
@@ -134,3 +135,21 @@ When adding sources, use:
 5. **No Corrections Required:**
    - All major claims in the knowledge base were confirmed
    - 2025 literature expands on (but does not contradict) established understanding
+
+## Framework Notes
+
+### Core/Matrix vs Driver/Modulator
+
+This knowledge base uses the **driver/modulator** and **first-order/higher-order** framework (Sherman & Guillery) rather than the **core/matrix** framework (Jones 1998).
+
+**Core/Matrix (Jones 1998):**
+- Core neurons: Parvalbumin+, project to Layer IV (topographic)
+- Matrix neurons: Calbindin+, project to Layer I (diffuse)
+
+**Why We Don't Use It:**
+Sherman & Usrey (2024) recommend abandoning the core/matrix framework because:
+1. It conflates projection patterns with functional properties
+2. It oversimplifies thalamic relay diversity
+3. Driver/modulator distinction better captures computational roles
+
+The driver/modulator framework is the current scientific consensus.

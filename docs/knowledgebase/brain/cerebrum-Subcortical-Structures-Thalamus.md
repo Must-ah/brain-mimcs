@@ -939,6 +939,13 @@ These nuclei are located within the internal medullary lamina. They project diff
 - **From corticothalamic axons (Layer VI collaterals):** As cortex sends feedback to thalamus, Layer VI axons give collaterals to TRN
   - Glutamatergic (excitatory)
   - Allows cortex to control thalamic gating
+- **From frontal cortex Layer V (direct):** UNIQUE to frontal cortex
+  - Glutamatergic (excitatory)
+  - Monosynaptic L5 pyramidal → TRN connection
+  - Allows frontal cortex privileged top-down control over thalamic gating
+  - Other cortical regions (sensory, etc.) do NOT have this L5→TRN pathway
+  - Function: Synchronizes multiple thalamic nuclei during frontal activity
+  - **Source:** Hádinger et al. 2022, Nature Neuroscience
 - **From basal forebrain:** Cholinergic modulation
   - ACh suppresses TRN bursting, promotes tonic relay mode
 - **From brainstem (locus coeruleus, raphe):** Modulatory
@@ -966,6 +973,25 @@ These nuclei are located within the internal medullary lamina. They project diff
 - This bursting inhibits thalamic relay neurons rhythmically
 - Creates sleep spindles seen on EEG
 - Important for memory consolidation
+
+### TRN Neuronal Heterogeneity
+
+The TRN contains molecularly and functionally distinct subpopulations:
+
+**Transcriptional Types:**
+- **Ecel1+ neurons**: One burst firing profile
+- **Spp1+ neurons**: Different burst firing profile
+
+**CaV3.3 T-type Calcium Channel:**
+- Generates burst firing for sleep spindles
+- **Sensory TRN (caudal)**: Higher CaV3.3 expression → stronger bursts → more spindles → controls sleep fragmentation
+- **Limbic TRN (rostral)**: Lower CaV3.3 expression → controls sleep duration
+
+**Spatial Organization:**
+- **Core TRN**: Central 50% along medial-lateral axis, predominantly PV+ neurons
+- **Shell TRN**: Medial and lateral 25%, predominantly SOM+ neurons
+
+**Citations:** Cho et al. 2025; Martinez-Garcia et al. 2020; Li et al. 2020
 
 **Sensory Gating:**
 - TRN can suppress irrelevant sensory information
