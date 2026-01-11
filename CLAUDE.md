@@ -151,12 +151,12 @@ brain-mimc is a brain-inspired software framework modeling hierarchical, asynchr
 | System | Cerebrum, Cerebellum, Brainstem, Spinal Cord |
 | Region | Cortex, Thalamus, BG, Limbic, Hypothalamus |
 | Sub-component | Each nucleus, each cortex layer, each pathway |
-| Loop | A, B, C, D all run concurrently |
+| Loop | A, B, C, D, E all run concurrently |
 | Scope | Each room/device/session processes independently |
 
 **No sequential pipelines. No blocking calls. No orchestrator.**
 
-### 2. Four Major Loops (ALL CONCURRENT)
+### 2. Five Major Loops (ALL CONCURRENT)
 
 | Loop | Path | Purpose |
 |------|------|---------|
@@ -164,6 +164,7 @@ brain-mimc is a brain-inspired software framework modeling hierarchical, asynchr
 | B | Cortex - BG - Thalamus - Cortex | Action Selection |
 | C | Cortex - Cerebellum - Thalamus - Cortex | Calibration |
 | D | Limbic - Hypothalamus - Brainstem - Body | Regulation |
+| E | Hippocampus - Mammillary - Ant. Thalamus - Cingulate - Hippocampus | Memory (Papez) |
 
 ### 3. Thalamus: Nucleus-Based Architecture
 
@@ -278,6 +279,7 @@ See `src/cerebrum/subcortical/thalamus/ARCHITECTURE_GOALS.md` for full details.
 - **Loop B**: Cortex - Basal Ganglia - Thalamus - Cortex (action selection)
 - **Loop C**: Cortex - Cerebellum - Thalamus - Cortex (timing/calibration)
 - **Loop D**: Limbic - Hypothalamus - Brainstem (body regulation)
+- **Loop E**: Hippocampus - Mammillary Bodies - Anterior Thalamus - Cingulate - Hippocampus (memory/Papez circuit)
 
 ### Communication Lanes
 
@@ -410,6 +412,25 @@ When decisions are made or requirements change:
 
 This prevents behavior drift across sessions.
 
+## Audit History
+
+Location: `docs/audits/`
+
+| Date | Audit | Key Decisions |
+|------|-------|---------------|
+| 2026-01-11 | branch-decision | Delete feature/thalamus-nucleus-refactor (regressed to channels) |
+| 2026-01-11 | gatestate-discussion | Converged design: TRNSector, dual inhibition, TONIC/BURST |
+| 2026-01-11 | lanes-planes | Core lanes (A-G) verified brain-faithful |
+| 2026-01-11 | combined-audit | Brain-faithfulness 7/10, architecture 31% compliant |
+
+**Key decisions from 2026-01-11 audits:**
+- Stay on main branch (nucleus-based foundation correct)
+- Add Loop E (Papez/Memory circuit) - DONE
+- GateState needs: TRNSector enum, dual inhibition, TONIC/BURST modes
+- Delete channel files (not brain-faithful)
+- Fix type duplication (ScopeLevel in 6 files, GateState in 3 files)
+
 ## Reference Documents
 
 - **Full Project Goals:** `docs/PROJECT_GOALS.md` (verification log, detailed specs)
+- **Audit Files:** `docs/audits/` (neuro-expert and arch-expert findings)
