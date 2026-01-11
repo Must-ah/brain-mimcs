@@ -236,6 +236,75 @@ IT'S LIKE:
 
 ---
 
+## First-Order → Cortex → Higher-Order Flow
+
+**Critical insight: First-order and higher-order nuclei do NOT connect directly. Cortex is the BRIDGE.**
+
+```
+        EXTERNAL WORLD
+              │
+              │ raw input
+              ↓
+       ┌─────────────┐
+       │ FIRST-ORDER │ (LGN, MGN, VPL, etc.)
+       │   THALAMUS  │
+       │             │
+       │ Driver =    │
+       │ SUBCORTICAL │
+       └──────┬──────┘
+              │
+              │ to Layer IV
+              ↓
+       ┌─────────────────────────────────────────┐
+       │              PRIMARY CORTEX             │
+       │              (V1, A1, S1, M1)           │
+       │                                         │
+       │  L4 receives ────────────────────────   │
+       │       │                                 │
+       │       ↓ processing                      │
+       │       │                                 │
+       │  L5 sends ──────────────────────────────│────→ to Higher-Order
+       │       │                                 │
+       │  L6 feedback ───────────────────────────│────→ back to First-Order
+       │                                         │
+       └─────────────────────────────────────────┘
+              │
+              │ processed features (Layer V)
+              ↓
+       ┌─────────────┐
+       │HIGHER-ORDER │ (Pulvinar, MD, LP)
+       │   THALAMUS  │
+       │             │
+       │ Driver =    │
+       │ CORTICAL L5 │
+       └──────┬──────┘
+              │
+              │ synchronized
+              ↓
+       ┌─────────────────────────────────────────┐
+       │          ASSOCIATION CORTEX             │
+       │       (V2, V4, MT, PFC, Parietal)       │
+       │                                         │
+       │       ↓                                 │
+       │  Layer V sends back to Higher-Order ────│────→ continuous loop
+       │                                         │
+       └─────────────────────────────────────────┘
+```
+
+### Why This Architecture?
+
+| Stage | What Happens |
+|-------|--------------|
+| **First-Order** | Receives RAW input (pixels, frequencies, touch signals) |
+| **Primary Cortex** | PROCESSES into FEATURES (edges, pitch, texture) |
+| **Higher-Order** | Routes PROCESSED features between cortical areas |
+
+**Key distinction:**
+- First-order driver = SUBCORTICAL (external world)
+- Higher-order driver = CORTICAL L5 (processed output)
+
+---
+
 ## TRN (Gatekeeper)
 
 The TRN is a thin shell of GABAergic neurons that wraps around the thalamus. It does NOT relay to cortex - it INHIBITS relay nuclei.

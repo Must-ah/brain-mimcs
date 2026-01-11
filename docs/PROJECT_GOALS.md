@@ -226,6 +226,13 @@ All components grow in capability together. Integration happens continuously as 
 | V24 | Priority: Foundation-up (Brainstem/SpinalCord/Thalamus first, Cortex last) | neuro-expert | Cortex depends on all lower structures |
 | V25 | Thalamus: Nucleus-based from scratch (Option A) | neuro-expert | Nucleus classes fundamental to driver/modulator, TRN gating, transthalamic routes |
 | V26 | Communication: Discrete pub-sub (not continuous streaming) | neuro-expert | Brain uses discrete spikes; rate emerges from counting events |
+| V27 | No central controller - integration EMERGES from architecture | neuro-expert dialog | 5 mechanisms: Convergence, Competition, Synchronization, Global State, Shared Hubs |
+| V28 | 6 major loops through thalamus (not 5) | Reference docs | Cerebellar, BG, Papez, HPC-PFC, Arousal, Emotional |
+| V29 | First-order and higher-order do NOT connect directly | Reference docs | Cortex is the BRIDGE between them |
+| V30 | Multi-input nuclei require integration logic | Reference docs | VL (combine), MD (priority), Pulvinar (orchestrate) |
+| V31 | TRN heterogeneity: rostral/caudal CaV3.3 differences | Cho et al. 2025 | Sensory TRN (caudal) vs Limbic TRN (rostral) have different burst profiles |
+| V32 | Frontal L5→TRN direct pathway | Hádinger 2022 | Unique monosynaptic connection from frontal cortex Layer V to TRN |
+| V33 | Nucleus Reuniens is bidirectional | Reference docs | mPFC ↔ Reuniens ↔ Hippocampus (unique in thalamus) |
 
 ### Items Requiring Discussion
 

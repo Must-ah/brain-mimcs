@@ -256,6 +256,51 @@ Thalamic relay operates in TWO modes with DIFFERENT communication patterns. This
 
 **Source:** Cho et al. 2025 (TRN dual inhibitory network), Sherman 2016 (burst vs tonic relay modes)
 
+### 12. Emergent Integration (No Central Controller)
+
+**The brain has NO central controller.** Integration EMERGES from architecture.
+
+| Mechanism | How It Works |
+|-----------|--------------|
+| **Convergence** | Multiple inputs → single node → must integrate |
+| **Competition** | Winner-take-all → only one output (TRN: graded; BG: binary) |
+| **Synchronization** | Same timing → same object/event (gamma binding) |
+| **Global State** | Neuromodulators set mode for EVERYTHING (ACh, DA, NE, 5-HT) |
+| **Shared Hubs** | Thalamus, Striatum = where loops MEET and integrate |
+
+**The city analogy:**
+- Not a CPU with a program
+- More like a city with traffic patterns
+- Roads (pathways) are fixed
+- Traffic lights (TRN) control flow
+- Weather (neuromodulators) affects everything
+- Intersections (hubs) force integration
+
+**Source:** one-system.md (reference doc)
+
+### 13. First-Order / Higher-Order Flow
+
+**First-order and higher-order nuclei do NOT connect directly. Cortex is the BRIDGE.**
+
+```
+External → First-order → Cortex L4
+                            ↓
+                        [processing]
+                            ↓
+                        Cortex L5 → Higher-order → Association Cortex
+                            ↓
+                        Cortex L6 → First-order (feedback)
+```
+
+| Nucleus Type | Driver Input | Output | Role |
+|--------------|--------------|--------|------|
+| First-order | SUBCORTICAL (raw) | Primary cortex L4 | Brings NEW info into system |
+| Higher-order | CORTICAL L5 (processed) | Association cortex | Routes between cortical areas |
+
+**Key insight:** First-order receives RAW input, cortex PROCESSES it, higher-order routes PROCESSED features.
+
+**Source:** mutliple-order-flow.md (reference doc)
+
 ---
 
 ## Commands
@@ -447,6 +492,30 @@ Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-pla
 - Add Loop E (Papez/Memory circuit) - DONE
 - Delete channel files (not brain-faithful) - DONE
 
+## Current Status (2026-01-11 Checkpoint)
+
+### Completed
+- [x] Loop Zero demo (3 processes, MQTT, concurrent proof-of-concept)
+- [x] 3 KB updates (TRN heterogeneity, L5→TRN pathway, Core/Matrix note)
+- [x] Thalamus architecture document (728 lines)
+- [x] 10 thalamus reference documents (~8K lines)
+- [x] Core Principles 11-13 added (Dual-mode, Emergent Integration, FO/HO Flow)
+
+### Design Insights Documented
+1. NO central controller - integration EMERGES from architecture
+2. 5 integration mechanisms: Convergence, Competition, Synchronization, Global State, Shared Hubs
+3. 6 major loops through thalamus (not just 5)
+4. Multi-input nuclei require integration logic (VL, MD, Pulvinar)
+5. First-order ≠ Higher-order direct - Cortex is the bridge
+6. 10 things still missing (see What-Missing.md)
+
+### Next Implementation Steps
+1. Define `NucleusId` enum with all ~60 nuclei
+2. Implement `TRNSector` with proper sector organization
+3. Design multi-input integration for VL, MD, Pulvinar
+4. Implement cross-loop `EventBus`
+5. Add `NeuromodulatorSystem` for global state
+
 **HIGH Priority (from audits):**
 - GateState refactor: TRNSector enum, dual inhibition, TONIC/BURST modes
 - Fix type duplication (ScopeLevel in 6 files, GateState in 3 files, InMemoryTopicBus in 3 files)
@@ -470,6 +539,14 @@ Consolidated from 5 original audits (neuro, arch, combined, gatestate, lanes-pla
 ## Reference Documents
 
 - **Full Project Goals:** `docs/PROJECT_GOALS.md` (verification log, detailed specs)
+- **Thalamus Architecture:** `docs/architecture/cerebrum/subcortical-thalamus/thalamus-architecture.md` (728 lines - comprehensive design)
+- **Thalamus Reference Docs:** `docs/knowledgebase/subcortical-thalamus/` (10 files, ~8K lines)
+  - `one-system.md` - Emergent integration, no central controller
+  - `mutliple-order-flow.md` - First-order → Cortex → Higher-order flow
+  - `What-Missing.md` - 10 things still to address
+  - `challanges_thalamus_framework.md` - Implementation challenges
+  - `All-Major-Loops-Through-Thalamus.md` - 6 loops with code
+  - `Complete-thamalus-Framework.md` - Full Python framework
 - **Audit Files:** `docs/audits/` (neuro-expert and arch-expert findings)
 - **Interface Specs:** `docs/interface_specs.md` (nucleus-based contracts, converged GateState)
 - **Topics & Contracts:** `docs/topics_and_contracts.md` (MQTT topic structure)
